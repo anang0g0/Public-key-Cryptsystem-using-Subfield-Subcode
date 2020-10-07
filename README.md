@@ -1,4 +1,4 @@
-# Private-key-Cryptosystem-using-Subfield-Subcode
+# Pubric-and-Private-key-Cryptosystem-using-Subfield-Subcode
 # （間違えたら消します）
 
 部分体部分符号を用いたエラー入り公開鍵暗号とその実装
