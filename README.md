@@ -6,9 +6,7 @@
 
 20201007：
 
-・課題その１　エラー入りMcEliece暗号（設計中）
-
-・課題その２　Rao-Nam型秘密鍵暗号の安全性の下界を比較してみる。
+・課題その２　エラー入りMcEliece暗号（設計中）
 
 設定：[n,k,d]=[640,320,65]-binary Goppa Code。
 
@@ -86,13 +84,12 @@ E'=Σ(e_i^E_i)(0<i<k)とする。
 
 ここで、E'の次元をｋとすると、ｍ’の前半ｋビットをm",E'の前半ｋ＊ｋ行列をＡとする。
 
-参考文献：THE RAO-NAM SCHEME IS INSECURE AGAINST A CHOSEN-PLAINTEXT ATTACK
-
-https://link.springer.com/chapter/10.1007/3-540-48184-2_40
-
 
 
 20201006
+
+・課題その１　Rao-Nam型秘密鍵暗号の安全性の下界を比較してみる。
+
 
 暗号化鍵が見えなければいいので、鍵サイズも公開鍵バージョンよりずっと小さくなる。
 
@@ -162,4 +159,9 @@ a=c'^e=c=mSG
 
 a(SG)^{-1}=m
 
+・選択的平文攻撃にかかる計算量O(k^2nN^2logN),n符号長、ｋ符号の次元、Ｎ平文と暗号文のペアの数。（このＮは実はnに対して指数関数になる）
+
+参考文献：THE RAO-NAM SCHEME IS INSECURE AGAINST A CHOSEN-PLAINTEXT ATTACK
+
+https://link.springer.com/chapter/10.1007/3-540-48184-2_40
 
