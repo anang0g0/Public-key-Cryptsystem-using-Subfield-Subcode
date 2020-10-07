@@ -1,4 +1,4 @@
-# Private-key-Cryptosystem-using-Subfield-Subcode（いよいよ新型か？！）
+# Private-key-Cryptosystem-using-Subfield-Subcode
 
 部分体部分符号を用いた秘密鍵暗号とその実装（修論補完計画）
 20201006（今の所、設計段階）
