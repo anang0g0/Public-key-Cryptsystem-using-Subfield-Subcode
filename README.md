@@ -161,6 +161,8 @@ a(SG)^{-1}=m
 
 ・選択的平文攻撃にかかる計算量O(k^2nN^2logN),n符号長、ｋ符号の次元、Ｎ平文と暗号文のペアの数。（このＮは実はnに対して指数関数になる）
 
+＊ Ｌｉ－Ｗａｎｇ　scheme ＊（後述）
+
 参考文献：THE RAO-NAM SCHEME IS INSECURE AGAINST A CHOSEN-PLAINTEXT ATTACK
 
 https://link.springer.com/chapter/10.1007/3-540-48184-2_40
