@@ -165,5 +165,7 @@ a(SG)^{-1}=m
 
 参考文献：THE RAO-NAM SCHEME IS INSECURE AGAINST A CHOSEN-PLAINTEXT ATTACK
 
+https://link.springer.com/chapter/10.1007%2F3-540-48184-2_41
+
 https://link.springer.com/chapter/10.1007/3-540-48184-2_40
 
