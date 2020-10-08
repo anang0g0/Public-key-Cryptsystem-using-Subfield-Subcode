@@ -1,4 +1,4 @@
-# Pubric-key-Cryptosystem-using-Subfield-Subcode
+# Pubric-key-Cryptosystem-using-Subfield-Subcode(with Hidden error pattern)
 # （間違えたら消します）
 
 
