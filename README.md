@@ -47,11 +47,12 @@ c=mE+e（eは　wt(e)>0,mは　0=<wt(m)<t、eは　cの前半ｋビットに入�
 ここで、wt(e)+wt(m)=t　とする。
 
 
-復号化
+３．復号化
 
 1.暗号文cに対して、
 
-s=cH=S(GPH+eH+SP2H)=s1+s2
+s=cH=S(GPH+eH+SP2H)=0+s1+s2
+
 s'=(S^{-1})s
 
 2:
