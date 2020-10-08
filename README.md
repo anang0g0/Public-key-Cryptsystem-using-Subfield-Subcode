@@ -1,4 +1,4 @@
-# Pubric-key-Cryptosystem-using-Subfield-Subcode(with Hidden error bit)
+# Pubric-key-Cryptosystem-with-Hidden-error-bit
 # （間違えたら消します）
 
 # 20201009:エラー入りMcEliece暗号のつづき
