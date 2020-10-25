@@ -96,17 +96,17 @@ c=mE+e（eは　wt(e)>0,mは　0=<wt(m)<t、eは　cの前半ｋビットに入�
 
 2:
 
-<img src="https://latex.codecogs.com/gif.latex?D(s')=eP+mP2P=(e+mP2)P=e'">
+<img src="https://latex.codecogs.com/gif.latex?D(s')=eP+mP'P=(e+mP')P=e'">
 
-<img src="https://latex.codecogs.com/gif.latex?e2=(e')P^{-1}">
+<img src="https://latex.codecogs.com/gif.latex?e''=(e')P^{-1}">
 
-e2を前半Kビットe、後半kビットm'に分ける。
+e"を前半Kビットe、後半kビットm'に分ける。
 
 すると、A,Bがそれぞれ線形なので、それぞれ独立したブロックである。
 
 なので、後半kビットにかかるm'に注目し、
 
-<img src="https://latex.codecogs.com/gif.latex?m=m'P2^{-1}">
+<img src="https://latex.codecogs.com/gif.latex?m=m'P'^{-1}">
 
 # 20201007　エラー入りMcEliece公開鍵暗号
 
