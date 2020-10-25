@@ -1,6 +1,16 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
 # （間違えたら消します）
 
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_CHTML"></script>
+<script type="text/x-mathjax-config">
+ MathJax.Hub.Config({
+ tex2jax: {
+ inlineMath: [["\\(","\\)"] ],
+ displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+ }
+ });
+</script>
+
 # 20201025
 
 何とか今日はプログラミングできた。
