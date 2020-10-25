@@ -17,9 +17,7 @@
 stableとdevの違いのようなものです。
 
 
-<img src="https://latex.codecogs.com/gif.latex?
- e^{i\pi} = -1
-\}
+<img src="https://latex.codecogs.com/gif.latex?e^{i\pi} = -1"\}
 # 20201024
 
 あまりコーディングする気にならない。
