@@ -9,7 +9,7 @@
 仮に暗号ができたとしても、一般代数曲線を使った符号の復号にはならないので必要性がなくなったわけではない。
 目標を見逃したか？
 
-<img src="https://latex.codecogs.com/gif.latex?e^{i\pi}&space;=&space;-1">
+
 
 ともかくも、バイナリバージョンのMcElieceは完成に近づいたので今日は安心して眠れそうだ。
 
@@ -91,7 +91,8 @@ c=mE+e（eは　wt(e)>0,mは　0=<wt(m)<t、eは　cの前半ｋビットに入�
 
 s=cH=S(GPH+ePH+(mP2)PH)=0+s1+s2
 
-$s'=S^{-1}s$
+<img src="https://latex.codecogs.com/gif.latex?s'=S^{-1}s">
+$$
 
 
 2:
