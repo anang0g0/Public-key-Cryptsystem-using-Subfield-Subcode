@@ -56,7 +56,8 @@ extern void makeS ();
 unsigned short sy[K] = { 0 };
 
 //Goppa多項式
-static unsigned short g[K + 1] = { 0 };
+static unsigned short g[K + 1] = {1,0,0,13,1,0,6,3,5};
+  //{ 0 };
   //{1,0,0,5,0,0,12,10,14};
 // 
   //{1,0,0,0,1,6,0,0,9}; //{1,0,6,0,0,0,0,8,1};
@@ -2264,7 +2265,7 @@ deta (unsigned short g[])
       flg = 0;
       for (i = 0; i < K; i++)
         {
-          printf ("%d,", mat[i][j]);
+          printf ("%2d,", mat[j][i]);
           if (mat[j][i] > 0)
             flg = 1;
         }
@@ -3515,7 +3516,33 @@ unsigned short invP[N][N]=
     {  2, 10, 15,  8,  1, 11,  9, 15},
     {  2, 10, 12, 13,  8,  8,  5, 15},
    };
+
+unsigned short S[K][K]=
+  {
+   {1,0,0,0,0,0,1,1,},
+   {1,1,0,0,1,0,0,0,},
+   {1,0,1,1,1,0,0,1,},
+   {1,1,0,1,0,0,0,1,},
+   {0,0,0,1,0,1,1,1,},
+   {0,1,1,0,0,0,1,1,},
+   {1,1,1,0,0,1,1,0,},
+   {0,0,0,0,0,0,0,1,},
+  };
  
+unsigned short inv_S[K][K]=
+  {
+   {0,1,1,0,1,0,1,0,},
+   {1,1,1,1,0,1,0,0,},
+   {0,0,0,1,1,0,1,0,},
+   {1,0,0,0,1,1,1,1,},
+   {1,1,0,1,1,1,1,0,},
+   {0,1,1,0,1,1,0,1,},
+   {1,1,1,0,1,0,1,1,},
+   {0,0,0,0,0,0,0,1,},
+  };
+
+
+/*
    unsigned char S[K][K]=
       {
        {1,1,1,0,1,0,0,0,1,0,1,1},
@@ -3546,6 +3573,7 @@ unsigned char inv_S[K][K]=
    {0,0,1,0,0,1,0,0,0,1,1,0},
    {0,0,1,1,1,1,1,1,1,1,1,1}
   };
+*/
 
 //公開鍵matはグローバル変数でスタック領域に取る。
 //ヒープ領域は使うときはここを有効にしてください。
@@ -3579,9 +3607,9 @@ label:
       j=0;
       k = 0;
       flg = 0;
-      memset (g, 0, sizeof (g));
+      //memset (g, 0, sizeof (g));
       memset (ta, 0, sizeof (ta));
-      ginit ();
+      //ginit ();
 
       for (i = 0; i < K + 1; i++)
         {
@@ -3649,10 +3677,13 @@ lab:
 
   matmul ();
   matinv ();
-  // makeS();
+  //makeS();
   //exit(1);
 
   printf("gen\n");
+  
+  //置換行列をかける時
+  /*
   for(i=0;i<K;i++){
     for(j=0;j<M;j++){
       for(k=0;k<M;k++)
@@ -3662,39 +3693,63 @@ lab:
     printf("\n");
   }
   printf("\n");
+  */
+
+  //スクランブル行列をかける時
+  for(i=0;i<K;i++){
+    for(j=0;j<D;j++){
+      for(k=0;k<K;k++){
+	gen[j][i]^=gf[mlt(S[i][k],fg[mat[j][k]])];
+      }
+      printf("%2d,",gen[j][i]);
+    }
+    printf("\n");
+  }
+  printf("\n");
 
   printf("mat\n");
-
-  for(i=0;i<K;i++){
-    for(j=0;j<N;j++)
-      printf("%2d,",mat[j][i]);
-    printf("\n");
-  }
-  printf("\n");
-
-  /*
-  for(i=0;i<K;i++){
-    for(j=0;j<N;j++)
-      mat[j][i]=0;
-  }
-  
   for(i=0;i<K;i++){
     for(j=0;j<N;j++){
-      for(k=0;k<N;k++)
-	mat[j][i]^=gf[mlt(fg[gen[i][k]],invP[k][j])];
+      printf("%2d,",mat[j][i]);
     }
-  }
-  
-  for(j=0;j<K;j++){
-    for(i=0;i<N;i++)
-      printf("%d,",mat[i][k]);
     printf("\n");
   }
   printf("\n");
-  exit(1);
+  
+  unsigned short o[K][K]={0};
+  for(i=0;i<K;i++){
+    for(j=0;j<K;j++){
+      for(k=0;k<K;k++)
+	o[i][j]^=gf[mlt(inv_S[j][k],S[k][i])];
+    }
+  }
+  for(i=0;i<K;i++){
+    for(j=0;j<K;j++)
+      printf("%d,",o[i][j]);
+    printf("\n");
+  }
+  //exit(1);
+  /*
+  memset(mat,0,sizeof(mat));
+  
+  for(j=0;j<N;j++){
+    for(i=0;i<K;i++){
+      for(k=0;k<K;k++)
+	mat[j][i]^=gf[mlt(inv_S[i][k],fg[gen[j][k]])];
+    }
+  }
+
+  printf("after inv_S\n");
+  for(j=0;j<K;j++){
+    for(i=0;i<N;i++)
+      printf("%2d,",mat[i][j]);
+    printf("\n");
+  }
+  printf("\n");
+  //exit(1);
   */
   
-  vec ef={0},gh={0};
+
 
   memcpy(mat,gen,sizeof(mat));
   /*  
@@ -3744,19 +3799,25 @@ lab:
         }
       //exit(1);
 
+      vec ef={0},gh={0};
+      
       f = synd (zz);
       //exit(1);
-      /*      
+
       f=conv(f);
+      printpol(o2v(f));
+      printf("\n");
+      
+      //exit(1);
       ef=o2v(f);
-      for(j=0;j<K;j++){
-      for(i=0;i<K;i++)
-	gh.x[j]^=gf[mlt(fg[ef.x[i]],fg[invA0[i][j]])];
+      for(i=0;i<K;i++){
+      for(k=0;k<K;k++)
+	gh.x[i]^=gf[mlt(inv_S[i][k],fg[ef.x[k]])];
       }
       f=v2o(gh);
       f=conv(f);
       //exit(1);
-      */
+      
       count = 0;
       /*
          count = 0;
@@ -3771,6 +3832,8 @@ lab:
       printf(" ==========goppa\n");
       printpol(o2v(f));
       printf(" ==========synd\n");
+      printf("15x^7+11x^6+9x^3+4x^2+2x^1+9x^0+\n");
+      //exit(1);
       
       r = decode (w, f);
 
@@ -3838,7 +3901,16 @@ lab:
 
       f = synd (z1);
 
+      memset(gh.x,0,sizeof(gh.x));
+      ef=o2v(f);
+      for(i=0;i<K;i++){
+      for(k=0;k<K;k++)
+	gh.x[i]^=gf[mlt(inv_S[i][k],fg[ef.x[k]])];
+      }
+      f=v2o(gh);
+      f=conv(f);
 
+      
       //バグトラップのためのコード（省略）
       //trap(w,f);
       //バグトラップ（ここまで）
