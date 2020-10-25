@@ -89,7 +89,8 @@ c=mE+e（eは　wt(e)>0,mは　0=<wt(m)<t、eは　cの前半ｋビットに入�
 
 1.暗号文cに対して、
 
-s=cH=S(GPH+ePH+(mP2)PH)=0+s1+s2
+
+<img src="https://latex.codecogs.com/gif.latex?s=cH=S(GPH+ePH+(mP2)PH)=0+s1+s2">
 
 <img src="https://latex.codecogs.com/gif.latex?s'=S^{-1}s">
 
@@ -97,9 +98,9 @@ s=cH=S(GPH+ePH+(mP2)PH)=0+s1+s2
 
 <img src="https://latex.codecogs.com/gif.latex?D(s')=eP+mP2P=(e+mP2)P=e'">
 
-e"=(e')P^{-1}
+<img src="https://latex.codecogs.com/gif.latex?e2=(e')P^{-1}">
 
-e"を前半Kビットe、後半kビットm'に分ける。
+e2を前半Kビットe、後半kビットm'に分ける。
 
 すると、A,Bがそれぞれ線形なので、それぞれ独立したブロックである。
 
