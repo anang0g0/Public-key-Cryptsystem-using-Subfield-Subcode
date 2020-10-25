@@ -16,12 +16,10 @@
 前者のブランチはmain、後者はmasterです。
 stableとdevの違いのようなものです。
 
-<div style="display: none;">
-$$
- e^{i\pi} = -1
-$$
-</div>
 
+<img src="https://latex.codecogs.com/gif.latex?
+ e^{i\pi} = -1
+\}
 # 20201024
 
 あまりコーディングする気にならない。
@@ -206,4 +204,5 @@ E'=Σ(e_i^E_i)(0<i<k)とする。
 3.m'=c^(r^e')とし、m=m"A^{-1}。
 ```
 ここで、E'の次元をｋとすると、ｍ’の前半ｋビットをm",E'の前半ｋ＊ｋ行列をＡとする。
+
 
