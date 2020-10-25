@@ -6,7 +6,7 @@
 #include <time.h>
 
 //#define D 4096
-#define F 12 //2040
+#define F 8 //2040
 
 unsigned char a[F][F]={0};
 unsigned char cc[F][F]={0};
@@ -270,6 +270,7 @@ for(i=0;i<F;i++){
  }
   
  }
+  /*
   fq=fopen("S.key","wb");
   for(i=0;i<F;i++){
     for(j=0;j<F;j++)
@@ -278,7 +279,8 @@ for(i=0;i<F;i++){
     
   }
   fclose(fq);
-
+  
+  
   fq=fopen("inv_S.key","wb");
   for(i=0;i<F;i++){
     for(j=0;j<F;j++)
@@ -286,7 +288,7 @@ for(i=0;i<F;i++){
     fwrite(dd,1,n,fq);  
   }
   fclose(fq);
-
+  */
   free(b);
   
 }
