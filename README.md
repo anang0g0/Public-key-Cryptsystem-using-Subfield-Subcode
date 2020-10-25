@@ -1,17 +1,6 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
 # （間違えたら消します）
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [['$','$'], ['\\(','\\)']],
-      displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
-    }
-  });
-</script>
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 # 20201025
 
 何とか今日はプログラミングできた。
@@ -27,9 +16,11 @@
 前者のブランチはmain、後者はmasterです。
 stableとdevの違いのようなものです。
 
-```math
-e^{i\pi} = -1
-```
+<div style="display: none;">
+$$
+original e^{i\pi} = -1
+$$
+</div>
 
 # 20201024
 
