@@ -92,14 +92,12 @@ c=mE+e（eは　wt(e)>0,mは　0=<wt(m)<t、eは　cの前半ｋビットに入�
 s=cH=S(GPH+ePH+(mP2)PH)=0+s1+s2
 
 <img src="https://latex.codecogs.com/gif.latex?s'=S^{-1}s">
-$$
-
 
 2:
 
 D(s')=eP+mP2P=(e+mP2)P=e'
 
-e"=(e')P^{-1}
+<img src="https://latex.codecogs.com/gif.latex?e"=(e')P^{-1}">
 
 e"を前半Kビットe、後半kビットm'に分ける。
 
@@ -107,7 +105,7 @@ e"を前半Kビットe、後半kビットm'に分ける。
 
 なので、後半kビットにかかるm'に注目し、
 
-m=m'P2^{-1}
+<img src="https://latex.codecogs.com/gif.latex?m=m'P2^{-1}">
 
 # 20201007　エラー入りMcEliece公開鍵暗号
 
