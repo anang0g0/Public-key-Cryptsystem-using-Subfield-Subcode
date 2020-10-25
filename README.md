@@ -1,13 +1,3 @@
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_CHTML"></script>
-<script type="text/x-mathjax-config">
- MathJax.Hub.Config({
- tex2jax: {
- inlineMath: [["\\(","\\)"] ],
- displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
- }
- });
-</script>
-
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
 # （間違えたら消します）
 
@@ -108,11 +98,13 @@ s=cH=S(GPH+ePH+(mP2)PH)=0+s1+s2
 s'=S^{-1}s
 ```
 2:
-```math
+<pre>
+[tex:
 D(s')=eP+mP2P=(e+mP2)P=e'
 
 e"=(e')P^{-1}
-```
+]
+</pre>
 e"を前半Kビットe、後半kビットm'に分ける。
 
 すると、A,Bがそれぞれ線形なので、それぞれ独立したブロックである。
