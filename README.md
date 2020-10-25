@@ -88,8 +88,9 @@ c=mE+e（eは　wt(e)>0,mは　0=<wt(m)<t、eは　cの前半ｋビットに入�
 1.暗号文cに対して、
 ```math
 s=cH=S(GPH+ePH+(mP2)PH)=0+s1+s2
-
-s'=(S^{-1})s
+```
+```math
+s'=S^{-1}s
 ```
 2:
 ```math
