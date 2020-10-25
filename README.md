@@ -18,7 +18,7 @@ stableとdevの違いのようなものです。
 
 <div style="display: none;">
 $$
-original e^{i\pi} = -1
+ e^{i\pi} = -1
 $$
 </div>
 
