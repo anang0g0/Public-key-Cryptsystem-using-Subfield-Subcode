@@ -89,7 +89,8 @@ c=mE+e（eは　wt(e)>0,mは　0=<wt(m)<t、eは　cの前半ｋビットに入�
 
 s=cH=S(GPH+ePH+(mP2)PH)=0+s1+s2
 
-s'=S^{-1}s
+< img src="https://render.githubusercontent.com/render/math?math= s'=S^{-1}s " >
+
 
 2:
 
