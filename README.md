@@ -97,7 +97,7 @@ s=cH=S(GPH+ePH+(mP2)PH)=0+s1+s2
 
 <img src="https://latex.codecogs.com/gif.latex?D(s')=eP+mP2P=(e+mP2)P=e'">
 
-<img src="https://latex.codecogs.com/gif.latex?e"=e'P^{-1}">
+e"=(e')P^{-1}
 
 e"を前半Kビットe、後半kビットm'に分ける。
 
