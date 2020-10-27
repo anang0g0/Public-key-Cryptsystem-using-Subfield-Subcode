@@ -35,9 +35,9 @@ typedef struct pub {
 
 typedef struct {
   unsigned short x[N][N];
-  unsigned short y[K][K];
-  unsigned short z[K][N];
-  unsigned short w[N][K];
+  unsigned short y[N][N];
+  unsigned short z[K][K];
+  unsigned short w[K][K];
 } MAT;
 
 typedef struct {
