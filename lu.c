@@ -63,7 +63,7 @@ void g2(){
 }
 
 
-void makeS(){
+MAT makeS(){
   int i,j,k,l;
   unsigned char **b;
   unsigned char dd[F]={0};
@@ -73,7 +73,7 @@ void makeS(){
   unsigned char inv_a[F][F]; //ここに逆行列が入る
   unsigned char buf; //一時的なデータを蓄える
   int n=F;  //配列の次数
-
+  MAT S={0};
 
   b=malloc(F*sizeof(unsigned char *));
   for(i=0;i<F;i++)
@@ -167,6 +167,7 @@ for(i=0;i<F;i++){
 for(i=0;i<F;i++){
  for(j=0;j<F;j++){
   printf(" %d,",inv_a[i][j]);
+  S.w[i][j]=inv_a[i][j];
  }
  printf("\n");
  }
@@ -217,6 +218,7 @@ for(i=0;i<F;i++){
     for(j=0;j<F;j++){
       printf("%d,",cl[i][j]);
       dd[j]=cl[i][j];
+      S.z[i][j]=cl[i][j];
     }
   
     printf("},\n");
@@ -244,6 +246,7 @@ for(i=0;i<F;i++){
     for(j=0;j<F;j++){
       printf("%d,",inv_a[i][j]);
       dd[j]=inv_a[i][j];
+      S.w[i][j]=inv_a[i][j];
     }
     printf("},\n");
   }
@@ -290,6 +293,7 @@ for(i=0;i<F;i++){
   fclose(fq);
   */
   free(b);
-  
+
+  return S;
 }
 
