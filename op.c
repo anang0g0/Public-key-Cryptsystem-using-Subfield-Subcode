@@ -49,7 +49,7 @@
 extern unsigned long xor128 (void);
 extern int mlt (int x, int y);
 extern int mltn (int n, int a);
-extern void makeS ();
+extern MAT makeS ();
 
 //#pragma omp threadprivate(mat)
 //シンドロームのコピー
@@ -3410,6 +3410,8 @@ main (void)
     0
   };
   int fail = 0;
+
+  MAT GG={0},PP={0},SS={0};
   
   unsigned short P[N][N]=
     {
@@ -3608,18 +3610,19 @@ label:
   while (i < 0);
   
   unsigned short gen[N][K]={0};
-  
+  MAT G={0};
+  int uu,vv;
 lab:
 
   matmul ();
-  matinv ();
+
   //makeS();
   //exit(1);
 
   printf("gen\n");
   
   unsigned short mat2[N][K]={0},mat3[N][K]={0};
-
+  
   //スクランブル行列をかける時
   for(i=0;i<K;i++){
     for(j=0;j<D;j++){
@@ -3654,7 +3657,7 @@ lab:
     printf("\n");
   }
   printf("\n");
-
+  
   /*
   unsigned short o[K][K]={0};
   for(i=0;i<K;i++){
@@ -3710,9 +3713,11 @@ lab:
   //  exit(1);
   */
   
+  //for(i=K;i<N;i++)
+  //mat[i][i-K]^=1;
+  //memcpy(mat,mat2,sizeof(mat));
 
 
-  memcpy(mat,mat2,sizeof(mat));
 
   printf("gen2mat\n");
   for(i=0;i<8;i++){
@@ -3721,20 +3726,53 @@ lab:
     printf("\n");
   }
   //exit(1);
+
+
+
+
   
-  
+  unsigned short code[N]={0};
   //decode開始
   k = 0;
   while (1)
     {
-
+      memset(code,0,sizeof(code));
       o1 = 0;
 
       count = 0;
 
       memset (zz, 0, sizeof (zz));
+
       for(i=1;i<5;i++)
-      zz[i]=i;
+	zz[i]=1;
+
+      /*
+      for(i=0;i<N;i++){
+	for(j=0;j<K;j++){
+	  code[i]^=gf[mlt(fg[zz[j]],mat[i][j])];
+	}
+      }
+      */
+      memcpy(mat,mat2,sizeof(mat));
+      G=matinv ();
+      for(i=0;i<K;i++){
+	for(j=0;j<N;j++)
+	  printf("%d,",G.x[i][j]);
+	printf("\n");
+      }
+      for(i=0;i<N;i++)
+	code[i]=G.x[0][i];
+      for(i=0;i<N;i++)
+      printf("%d,",code[i]);
+      for(i=1;i<5;i++)
+	code[i]^=1;
+      printf("\n");
+      wait();
+  
+      //for(i=0;i<N;i++)
+      //code[i]=G.x[0][i]^G.x[1][i]^G.x[2][i]^G.x[3][i];
+      //for(i=1;i<5;i++)
+      //code[i]^=1;
       /*
       j = 0;
       while (j < T)
@@ -3750,16 +3788,17 @@ lab:
       */
       for (i = 0; i < D; i++)
         {
-          if (zz[i] > 0)
-            printf ("l=%d %d\n", i, zz[i]);
+          if (code[i] > 0)
+            printf ("l=%d %d\n", i, code[i]);
         }
+      wait();
       //exit(1);
 
       vec ef={0},gh={0};
       
-      f = synd (zz);
+      f = synd (code);
       //exit(1);
-
+      
       f=conv(f);
       printpol(o2v(f));
       printf("\n");
@@ -3798,12 +3837,12 @@ lab:
         {
           if (r.t[i].a > 0 && count > 0)        // == r.t[i].n)
             {
-              printf ("e=%d %d %s\n", r.t[i].a, r.t[i].n, "お");
+              printf ("e=%d %d %d %s\n", i,r.t[i].a, r.t[i].n, "お");
               count++;
             }
           if (count == 0 && r.t[i].a > 0)
             {
-              printf ("\ne=%d %d %s\n", r.t[i].a, r.t[i].n, "う");
+              printf ("\ne=%d %d %d %s\n", i,r.t[i].a, r.t[i].n, "う");
               count++;
             }
 
@@ -3821,7 +3860,7 @@ lab:
 	  printf("%d baka1\n",count);
 	  exit(1);
 	}
-
+      
       ef=o2v(r);
       for(i=0;i<N;i++)
 	printf("e=%d\n",ef.x[i]);
@@ -3838,7 +3877,8 @@ lab:
 	if(gh.x[i]>0)
 	  printf("e=%d %d\n",i,gh.x[i]);
       }
-      //exit(1);
+      
+      exit(1);
       //goto label;
 
     
@@ -3876,7 +3916,7 @@ lab:
 
 
       f = synd (z1);
-
+      /*
       memset(gh.x,0,sizeof(gh.x));
       ef=o2v(f);
       for(i=0;i<K;i++){
@@ -3885,7 +3925,7 @@ lab:
       }
       f=v2o(gh);
       f=conv(f);
-
+      */
       
       //バグトラップのためのコード（省略）
       //trap(w,f);
@@ -3894,7 +3934,8 @@ lab:
       count = 0;
       //復号化の本体
       v = pattarson (w, f);
-      
+
+      /*
       memset(gh.x,0,sizeof(gh.x));
       memset(ef.x,0,sizeof(ef.x));
       //for(i=0;i<N;i++)
@@ -3921,7 +3962,8 @@ lab:
 	printf("e=%d %d\n",i,ef.x[i]);
       }
       exit(1);
-      /*
+      */
+      
       //エラー表示
       for (i = 0; i < T * 2; i++)
         {
@@ -3951,7 +3993,7 @@ lab:
             }
 
         }
-      */
+      
       if(count==T*2){
       printf ("err=%dっ!! \n", count);
       B++;
