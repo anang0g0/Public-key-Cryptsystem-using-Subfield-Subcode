@@ -132,6 +132,7 @@ printf("%f\n",det); // -> 120.000000
 }
 */
 
+//なんなのかしらぁ〜
 void g3(){
   int i,j,k;
 unsigned short bb[F][F]={0};
@@ -193,9 +194,9 @@ unsigned short cc[N][N]={0};
 }
 
 
-unsigned short c2[K][N]={0};//,G[K][N]={0};
-//inverse matrix
-MAT matinv(){ //NEC G,int low,int col){
+unsigned short c2[K][N]={0};
+//inverse matrix (生成行列を返す)
+MAT matinv(){ 
   unsigned short a[F][F]; //={{1,2,0,1},{1,1,2,0},{2,0,1,1},{1,2,1,1}}; //入力用の配列
 unsigned short inv_a[F][F]; //ここに逆行列が入る
 unsigned short buf; //一時的なデータを蓄える
@@ -391,7 +392,7 @@ printf("行列を出力\n ={\n");
  return GG;
 }
 
-//Q-matrix
+//Q-matrix(置換行列を返す)
 MAT matmul(){
   int i,j,k,tmp[N][N]={0};
 unsigned char x0[N];//={1,2,3,4,5,6,7,0};
