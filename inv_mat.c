@@ -192,8 +192,10 @@ unsigned short cc[N][N]={0};
   //exit(1); 
 }
 
+
+unsigned short c2[K][N]={0};//,G[K][N]={0};
 //inverse matrix
-int matinv(){
+MAT matinv(){ //NEC G,int low,int col){
   unsigned short a[F][F]; //={{1,2,0,1},{1,1,2,0},{2,0,1,1},{1,2,1,1}}; //入力用の配列
 unsigned short inv_a[F][F]; //ここに逆行列が入る
 unsigned short buf; //一時的なデータを蓄える
@@ -202,13 +204,25 @@ unsigned short buf; //一時的なデータを蓄える
  int n=F;
 unsigned short c[N][N]={0};
 
-unsigned short cc[N][N]={0};
+ unsigned short cc[N][N]={0};
+ unsigned short code[K][N]={0};
+ MAT GG={0};
+ //GG.col=K;
+ //GG.low=N;
 
+ 
  lab:
+ 
+ 
+ //転置
+ for(i=0;i<K;i++){
+   for(j=0;j<N;j++)
+     code[i][j]=mat[j][i];
+ }
  
  for(i=0;i<F;i++){
    for(j=0;j<F;j++){
-     a[i][j]=rand()%N;
+     a[i][j]=code[i][K+j]; //rand()%N;
      //printf("%d,",a[i][j]);
    }
    //printf("\n");
@@ -283,6 +297,7 @@ printf("行列を出力\n ={\n");
        printf("\nbaka\n\n");
        goto lab;
      }
+     //GG.y[i][j]=inv_a[i][j];
      printf("%3d,",inv_a[i][j]);
    }
    printf("},\n");
@@ -298,17 +313,86 @@ printf("行列を出力\n ={\n");
      printf("%d,",b[i][j]);
      // if(j==i && b[i][j]!=1 && j!=i && b[i][j]>0)
      //goto lab;
-       
+     
    }
    printf("\n");
  }
- //exit(1);
+
+ //検算
+ for(i=0;i<n;i++){
+   for(j=0;j<N;j++){
+     for(k=0;k<n;k++)
+       c2[i][j]^=gf[mlt(fg[code[k][j]],fg[inv_a[i][k]])];
+
+     //printf("%2d,",c2[i][j]);
+     // if(j==i && b[i][j]!=1 && j!=i && b[i][j]>0)
+     //goto lab;
+       
+   }
+   //
+ }
+ printf("\n");
  
- return 0;
+ for(i=0;i<K;i++){
+   for(j=0;j<N;j++)
+     printf("%2d,",c2[i][j]);
+   printf("\n");
+ }
+ printf("\n");
+ 
+ for(i=0;i<K;i++){
+   for(j=0;j<K;j++)
+     GG.x[i][j]=c2[j][K+i];
+ }
+ for(i=0;i<K;i++){
+   for(j=0;j<K;j++)
+     GG.x[i][j+K]=c2[j][i];
+ }
+ printf("生成行列GG.x!\n");
+ for(i=0;i<K;i++){
+   for(j=0;j<N;j++)
+     printf("%2d,",GG.x[i][j]);
+   printf("\n");
+ }
+ printf("\n");
+ //exit(1);
+ unsigned short ss[N]={0};
+ unsigned short s[K]={0};
+ /* 
+ for(i=0;i<K;i++){
+   GG.x[i][i+K]^=1;
+ }
+ */
+ for(i=0;i<N;i++)
+   ss[i]=GG.x[0][i]^GG.x[1][i]^GG.x[2][i]^GG.x[3][i];
+ // for(i=0;i<4;i++)
+ //ss[i]^=1;
+
+ for(i=0;i<K;i++){
+   for(j=0;j<N;j++)
+     s[i]^=gf[mlt(fg[ss[j]],fg[code[i][j]])];
+ }
+ //パリティチェック行列:code
+ for(i=0;i<K;i++){
+   for(j=0;j<N;j++)
+     printf("%2d,",code[i][j]);
+   printf("\n");
+ }
+ printf("\n");
+ 
+ //シンドローム
+ printf("syn=");
+ for(i=0;i<K;i++)
+   printf("%d,",s[i]);
+ printf("\n");
+ // exit(1);
+ 
+ 
+ return GG;
 }
 
 //Q-matrix
-void matmul(){
+MAT matmul(){
   int i,j,k,tmp[N][N]={0};
 unsigned char x0[N];//={1,2,3,4,5,6,7,0};
 unsigned char x1[N];//={2,3,1,6,5,7,0,4};
@@ -320,8 +404,8 @@ unsigned short a[N][N]={0};//{{0,3,0,0,},{0,0,4,0},{0,0,0,5},{6,0,0,0}};
 unsigned short inv_a[N][N]={0};
   //{{0,0,0,1},{1,0,0,0},{0,1,0,0},{0,0,1,0}};
 //={{1,2,0,1},{1,1,2,0},{2,0,1,1},{1,2,1,1}}; //入力用の配列
-unsigned short cc[N][N]={0};
-
+ unsigned short cc[N][N]={0};
+ MAT P={0};
 
   rp(x0);
   printf("置換配列を表示\n");
@@ -340,8 +424,10 @@ unsigned short cc[N][N]={0};
   printf("Q1-置換行列を表示\n ={\n");
   for(i=0;i<N;i++){
     printf("{");
-    for(j=0;j<N;j++)
+    for(j=0;j<N;j++){
       printf("%3d,",a[j][i]);
+      P.x[j][i]=a[j][i];
+    }
     printf("},\n");
   }
   printf("};\n");
@@ -350,7 +436,8 @@ unsigned short cc[N][N]={0};
   for(i=0;i<N;i++){
     printf("{");
     for(j=0;j<N;j++){
-	printf("%3d,",inv_a[j][i]);	
+	printf("%3d,",inv_a[j][i]);
+	P.y[j][i]=inv_a[j][i];
     }
     printf("},\n");
   }
@@ -370,6 +457,7 @@ unsigned short cc[N][N]={0};
     printf("\n");
   }
 
+  return P;
 }
 
 /*
