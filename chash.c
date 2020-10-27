@@ -144,5 +144,16 @@ return 1;
   return i;
 }
 
+MAT _T(unsigned short A[N][K]){
+  MAT B={0};
+  int i,j;
+
+  for(i=0;i<K;i++){
+    for(j=0;j<N;j++)
+      B.x[i][j]=A[j][i];
+      }
+
+  return B;
+}
 
 
