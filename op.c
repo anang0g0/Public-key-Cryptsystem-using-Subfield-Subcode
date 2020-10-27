@@ -3411,8 +3411,7 @@ main (void)
   };
   int fail = 0;
 
-  MAT GG={0},PP={0},SS={0};
-  
+  MAT G={0},PP={0},SS={0};
   unsigned short P[N][N]=
     {
      {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0},
@@ -3610,8 +3609,7 @@ label:
   while (i < 0);
   
   unsigned short gen[N][K]={0};
-  MAT G={0};
-  int uu,vv;
+
 lab:
 
   matmul ();
@@ -3878,7 +3876,7 @@ lab:
 	  printf("e=%d %d\n",i,gh.x[i]);
       }
       
-      exit(1);
+      //exit(1);
       //goto label;
 
     
@@ -3890,8 +3888,9 @@ lab:
       //wait();
       count=0;
       memset (z1, 0, sizeof (z1));
-
-      
+      memset(code,0, sizeof (z1));
+      for(i=0;i<N;i++)
+	code[i]=G.x[2][i];
       j = 0;
       
       while (j < T * 2)
@@ -3906,17 +3905,18 @@ lab:
             }
         }
       //wait();
-      
+      for(i=0;i<N;i++)
+	code[i]^=z1[i];
 
       //for(i=0;i<8;i++)
       //z1[i]=1;
 
       //encryotion
       //test (w, z1);
+      memcpy(mat,mat2,sizeof(mat));
 
-
-      f = synd (z1);
-      /*
+      f = synd (code);
+      
       memset(gh.x,0,sizeof(gh.x));
       ef=o2v(f);
       for(i=0;i<K;i++){
@@ -3925,7 +3925,7 @@ lab:
       }
       f=v2o(gh);
       f=conv(f);
-      */
+      
       
       //バグトラップのためのコード（省略）
       //trap(w,f);
@@ -3935,7 +3935,7 @@ lab:
       //復号化の本体
       v = pattarson (w, f);
 
-      /*
+      
       memset(gh.x,0,sizeof(gh.x));
       memset(ef.x,0,sizeof(ef.x));
       //for(i=0;i<N;i++)
@@ -3962,7 +3962,7 @@ lab:
 	printf("e=%d %d\n",i,ef.x[i]);
       }
       exit(1);
-      */
+      
       
       //エラー表示
       for (i = 0; i < T * 2; i++)
