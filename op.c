@@ -56,7 +56,7 @@ extern MAT makeS ();
 unsigned short sy[K] = { 0 };
 
 //Goppa多項式
-static unsigned short g[K + 1] = {1,0,0,13,1,0,6,3,5};
+static unsigned short g[K + 1] = {1,0,0,1,14,15,6,0,15};
   //{ 0 };
   //{1,0,0,5,0,0,12,10,14};
 // 
@@ -1889,8 +1889,10 @@ decode (OP f, OP s)
   for (i = 0; i < T; i++)
     {
        printf ("x[%d]=1\n", x.x[i]);
-      if (x.x[i] == 0)
+       if (x.x[i] == 0){
+	 printf("xx[%d]=%d\n",i,x.x[i]);
         k++;
+       }
       if (k > 1)
         {
           printf ("baka0\n");
@@ -1948,7 +1950,7 @@ decode (OP f, OP s)
 
   for (i = 0; i < j; i++)
     {
-      if (x.x[i] > 0)
+      if (x.x[i] >= 0)
         {
           e.t[i].a =
             gf[mlt (fg[trace (hh.d, x.x[i])], oinv (trace (l, x.x[i])))];
@@ -3378,6 +3380,174 @@ readkey ()
 }
 
 
+MAT genSGP(){
+  int i,j,k;
+  MAT GG={0},G={0};
+  
+  unsigned short P[N][N]=
+    {
+     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0},
+     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0},
+     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1},
+     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0},
+     {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0},
+     {  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
+     {  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0},
+     {  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+     {  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0},
+     {  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+     {  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+     {  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0},
+     {  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0}
+    };
+
+unsigned short invP[N][N]=
+  {
+   {  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1},
+   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0},
+   {  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0},
+   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0},
+   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0},
+   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0},
+   {  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+   {  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0},
+   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0},
+   {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+   {  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+   {  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+   {  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0},
+   {  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0}
+  };
+  
+  
+
+unsigned short S[K][K]=
+  {
+   {1,0,0,0,0,0,1,1,},
+   {1,1,0,0,1,0,0,0,},
+   {1,0,1,1,1,0,0,1,},
+   {1,1,0,1,0,0,0,1,},
+   {0,0,0,1,0,1,1,1,},
+   {0,1,1,0,0,0,1,1,},
+   {1,1,1,0,0,1,1,0,},
+   {0,0,0,0,0,0,0,1,},
+  };
+ 
+unsigned short inv_S[K][K]=
+  {
+   {0,1,1,0,1,0,1,0,},
+   {1,1,1,1,0,1,0,0,},
+   {0,0,0,1,1,0,1,0,},
+   {1,0,0,0,1,1,1,1,},
+   {1,1,0,1,1,1,1,0,},
+   {0,1,1,0,1,1,0,1,},
+   {1,1,1,0,1,0,1,1,},
+   {0,0,0,0,0,0,0,1,},
+  };
+
+
+  printf("gen\n");
+  unsigned short gen[N][K]={0};
+  unsigned short mat2[N][K]={0},mat3[N][K]={0};
+  MAT G2={0};
+  
+  //  memcpy(mat,mat2,sizeof(mat));
+  printf("matinv\n");
+  G=matinv ();
+  for(i=0;i<K;i++){
+    for(j=0;j<N;j++)
+      printf("%02d,",G.x[i][j]);
+    printf("\n");
+  }
+  printf("\n");
+  wait();
+
+    
+  G2=K2N(G.x);
+  printf("after K2N\n");
+  for(i=0;i<K;i++){
+    for(j=0;j<N;j++)
+      printf("%d,",G2.x[j][i]);
+    printf("\n");
+  }
+  printf("\n");
+  wait();
+  /*
+  */
+  
+  //置換行列をかける時
+  printf("out of perm\n");
+  for(i=0;i<K;i++){
+    for(j=0;j<M;j++){
+      for(k=0;k<M;k++)       //gen
+	mat2[j][i]^=gf[mlt(fg[G2.x[k][i]],fg[P[k][j]])];
+      //G.y[j][i]=mat2[j][i];
+      printf("%2d,",mat[j][i]);
+
+    }
+    printf("\n");
+  }
+  printf("\n");
+
+  //スクランブル行列をかける時
+  printf("out of S\n");
+  for(i=0;i<K;i++){
+    for(j=0;j<D;j++){
+      for(k=0;k<K;k++){
+	gen[j][i]^=gf[mlt(fg[S[i][k]],fg[mat2[j][k]])];
+      }
+      printf("%2d,",gen[j][i]);
+      G.y[j][i]=gen[j][i];
+    }
+    printf("\n");
+  }
+  printf("\n");
+  wait();
+
+  //memcpy(G.y,mat2,sizeof(G.y));
+  unsigned code[N]={0},code2[N]={0},code3[N]={0};
+  for(i=0;i<N;i++)
+    code[i]=G.y[i][0];
+  /*  
+  for(i=0;i<N;i++){
+    for(j=0;j<N;j++)
+      code2[i]^=gf[mlt(fg[code[j]],fg[invP[j][i]])];
+  }
+  
+  printf("code\n");
+  for(i=0;i<N;i++)
+    printf("%d,",code[i]);
+  printf("\n");
+  printf("code2\n");
+  for(i=0;i<N;i++)
+    printf("%d,",code2[i]);
+  printf("\n");
+  printf("gen\n");
+  for(i=0;i<N;i++)
+    printf("%d,",gen[i][0]);
+  printf("\n");
+  wait();
+  //exit(1);
+  */
+  printf("mat\n");
+  for(i=0;i<K;i++){
+    for(j=0;j<N;j++){
+      printf("%2d,",mat[j][i]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+  
+  
+  return G;
+}
+
+
 //言わずもがな
 int
 main (void)
@@ -3411,7 +3581,7 @@ main (void)
   };
   int fail = 0;
 
-  MAT G={0},PP={0},SS={0};
+  MAT G={0},GG={0},PP={0},SS={0};
   unsigned short P[N][N]=
     {
      {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0},
@@ -3512,6 +3682,10 @@ unsigned char inv_S[K][K]=
   };
 */
 
+  unsigned short gen[N][K]={0};
+  unsigned short mat2[N][K]={0},mat3[N][K]={0};
+
+ 
 //公開鍵matはグローバル変数でスタック領域に取る。
 //ヒープ領域は使うときはここを有効にしてください。
 /*
@@ -3608,7 +3782,7 @@ label:
     }
   while (i < 0);
   
-  unsigned short gen[N][K]={0};
+  //unsigned short gen[N][K]={0};
 
 lab:
 
@@ -3617,222 +3791,213 @@ lab:
   //makeS();
   //exit(1);
 
-  printf("gen\n");
-  
-  unsigned short mat2[N][K]={0},mat3[N][K]={0};
-  
-  //スクランブル行列をかける時
-  for(i=0;i<K;i++){
-    for(j=0;j<D;j++){
-      for(k=0;k<K;k++){
-	gen[j][i]^=gf[mlt(fg[S[i][k]],fg[mat[j][k]])];
-      }
-      printf("%2d,",gen[j][i]);
-    }
-    printf("\n");
-  }
-  printf("\n");
-
-  
-  //置換行列をかける時
-  for(i=0;i<K;i++){
-    for(j=0;j<M;j++){
-      for(k=0;k<M;k++)
-	mat2[j][i]^=gf[mlt(fg[gen[k][i]],fg[P[k][j]])];
-    printf("%2d,",mat2[j][i]);
-    }
-    printf("\n");
-  }
-  printf("\n");
-  
-
-  
-  printf("mat\n");
-  for(i=0;i<K;i++){
-    for(j=0;j<N;j++){
-      printf("%2d,",mat[j][i]);
-    }
-    printf("\n");
-  }
-  printf("\n");
-  
-  /*
-  unsigned short o[K][K]={0};
-  for(i=0;i<K;i++){
-    for(j=0;j<K;j++){
-      for(k=0;k<K;k++)
-	o[i][j]^=gf[mlt(fg[inv_P[j][k]],fg[P[k][i]])];
-    }
-  }
-  for(i=0;i<K;i++){
-    for(j=0;j<K;j++)
-      printf("%d,",o[i][j]);
-    printf("\n");
-  }
-  //exit(1);
-  */
-  // memset(mat,0,sizeof(mat));
-  
-  /*
-    for(j=0;j<N;j++){
-    for(i=0;i<K;i++){
-    for(k=0;k<K;k++)
-    mat3[j][i]^=gf[mlt(fg[inv_S[i][k]],fg[mat2[j][k]])];
-    }
-    }
-
-  
-    //置換の確認
-  memset(mat,0,sizeof(mat2));
-  
-  for(i=0;i<K;i++){
-    for(j=0;j<N;j++){
-      for(k=0;k<N;k++)
-	mat[j][i]^=gf[mlt(fg[mat3[k][i]],fg[invP[k][j]])];
-    }
-  }
-
-  for(j=0;j<K;j++){
-    for(i=0;i<N;i++)
-      printf("%d,",mat[i][j]);
-    printf("\n");
-  }
-  printf("\n");
-  exit(1);
-
-
-  printf("after inv_S\n");
-  for(j=0;j<K;j++){
-    for(i=0;i<N;i++)
-      printf("%2d,",mat[i][j]);
-    printf("\n");
-  }
-  printf("\n");
-  //  exit(1);
-  */
-  
-  //for(i=K;i<N;i++)
-  //mat[i][i-K]^=1;
-  //memcpy(mat,mat2,sizeof(mat));
-
-
-
-  printf("gen2mat\n");
-  for(i=0;i<8;i++){
-    for(j=0;j<M;j++)
-      printf("%2d,",mat[j][i]);
-    printf("\n");
-  }
-  //exit(1);
-
-
-
-
-  
-  unsigned short code[N]={0};
-  //decode開始
-  k = 0;
-  while (1)
-    {
-      memset(code,0,sizeof(code));
-      o1 = 0;
-
-      count = 0;
-
-      memset (zz, 0, sizeof (zz));
-
-      for(i=1;i<5;i++)
-	zz[i]=1;
-
-      /*
-      for(i=0;i<N;i++){
-	for(j=0;j<K;j++){
-	  code[i]^=gf[mlt(fg[zz[j]],mat[i][j])];
-	}
-      }
-      */
-      memcpy(mat,mat2,sizeof(mat));
-      G=matinv ();
+      G=genSGP();
+      printf("after SG\n");
       for(i=0;i<K;i++){
-	for(j=0;j<N;j++)
-	  printf("%d,",G.x[i][j]);
+	for(j=0;j<N;j++){
+	  printf("%2d,",G.y[j][i]);
+	  
+	}
 	printf("\n");
       }
-      for(i=0;i<N;i++)
-	code[i]=G.x[0][i];
-      for(i=0;i<N;i++)
-      printf("%d,",code[i]);
-      for(i=1;i<5;i++)
-	code[i]^=1;
-      printf("\n");
-      wait();
-  
-      //for(i=0;i<N;i++)
-      //code[i]=G.x[0][i]^G.x[1][i]^G.x[2][i]^G.x[3][i];
-      //for(i=1;i<5;i++)
-      //code[i]^=1;
-      /*
-      j = 0;
-      while (j < T)
-        {
-          l = xor128 () % D;
-          //printf("l=%d\n",l);
-          if (0 == zz[l] && l > 0)
-            {
-              zz[l] = l;
-              j++;
-            }
-        }
-      */
-      for (i = 0; i < D; i++)
-        {
-          if (code[i] > 0)
-            printf ("l=%d %d\n", i, code[i]);
-        }
-      wait();
       //exit(1);
-
-      vec ef={0},gh={0};
+      wait();      
       
-      f = synd (code);
-      //exit(1);
+      //置換の確認
+      //memset(mat,0,sizeof(mat2));
       
-      f=conv(f);
-      printpol(o2v(f));
-      printf("\n");
-
-     
-      //exit(1);
-      ef=o2v(f);
       for(i=0;i<K;i++){
-      for(k=0;k<K;k++)
-	gh.x[i]^=gf[mlt(fg[inv_S[i][k]],fg[ef.x[k]])];
+	for(j=0;j<N;j++){
+	  for(k=0;k<N;k++)
+	    gen[j][i]^=gf[mlt(fg[G.y[k][i]],fg[invP[k][j]])];
+	}
       }
-      f=v2o(gh);
-      f=conv(f);
+      printf("after invP\n");
+      for(j=0;j<K;j++){
+	for(i=0;i<N;i++)
+	  printf("%d,",gen[i][j]);
+	printf("\n");
+      }
+      printf("\n");
+      wait();
+
+      for(j=0;j<N;j++){
+	for(i=0;i<K;i++){
+	  for(k=0;k<K;k++)
+	    mat3[j][i]^=gf[mlt(fg[inv_S[i][k]],fg[gen[j][k]])];
+	}
+      }
+      printf("after inv_S\n");
+      for(j=0;j<K;j++){
+	for(i=0;i<N;i++)
+	  printf("%d,",mat3[i][j]);
+	printf("\n");
+      }
+      printf("\n");
+      wait();
+      
+      printf("decode of G\n");
+      for(j=0;j<K;j++){
+	for(i=0;i<N;i++)
+	  printf("%d,",gen[i][j]);
+	printf("\n");
+      }
+      printf("\n");
       //exit(1);
       
-      count = 0;
-      /*
-         count = 0;
-         for (i = 0; i < N; i++)
-         {
-         if (zz[i] > 0)
-         count++;
-         }
-         printf ("%d\n", count);
-       */
-      printpol(o2v(w));
-      printf(" ==========goppa\n");
-      printpol(o2v(f));
-      printf(" ==========synd\n");
-      printf("15x^7+11x^6+9x^3+4x^2+2x^1+9x^0+\n");
+      
+      printf("original\n");
+      for(j=0;j<K;j++){
+	for(i=0;i<N;i++)
+	  printf("%2d,",G.x[j][i]);
+	printf("\n");
+      }
+      printf("\n");
       //exit(1);
       
+      
+      //for(i=K;i<N;i++)
+      //mat[i][i-K]^=1;
+      //memcpy(mat,mat2,sizeof(mat));
+      
+      
+
+      printf("gen2mat\n");
+      for(i=0;i<8;i++){
+	for(j=0;j<M;j++)
+	  printf("%2d,",mat[j][i]);
+	printf("\n");
+      }
+      //exit(1);
+      
+      
+      
+      
+      
+      unsigned short code[N]={0},code2[N]={0},code3[N]={0};
+      
+      
+      //decode開始
+      k = 0;
+      while (1)
+	{
+	  memset(code,0,sizeof(code));
+	  memset(code2,0,sizeof(code2));
+	  o1 = 0;
+	  
+	  count = 0;
+	  
+	  memset (zz, 0, sizeof (zz));
+	  
+	  //for(i=0;i<4;i++)
+	  //zz[i]=i+1;
+	  
+	  
+	  j = 0;
+	  k = 0;
+	  while (j < T)
+	    {
+	      l = xor128 () % D;
+	      //printf("l=%d\n",l);
+	      if (0 == zz[l])
+		{
+		  k=rand()%M;
+		  if(k>0){
+		    zz[l] = k;
+		    j++;
+		  }
+		}
+	    }
+	  
+	  for(i=0;i<N;i++)
+	    printf("zz=%d %d\n",i,zz[i]);
+	  wait();
+
+	  for(i=0;i<N;i++)
+	    code[i]=G.y[i][0];
+	  for(i=0;i<N;i++)
+	    code[i]^=zz[i];
+	  unsigned short z3[N]={0};
+	  memcpy(z3,zz,sizeof(z3));
+	  for(i=0;i<N;i++){
+	    for(j=0;j<N;j++)
+	      code2[i]^=gf[mlt(fg[code[j]],fg[invP[j][i]])];
+	  }
+
+	  for (i = 0; i < D; i++)
+	    {
+	      if (code2[i] > 0)
+		printf ("l=%d %d\n", i, code2[i]);
+	    }
+	  wait();
+	  //exit(1);
+	  
+	  printf("code0\n");
+	  for(i=0;i<N;i++)
+	    printf("%d,",G.y[i][0]);
+	  printf("\n");
+	  printf("code\n");
+	  for(i=0;i<N;i++)
+	    printf("%d,",code[i]);
+	  printf("\n");
+	  printf("code2\n");
+	  for(i=0;i<N;i++)
+	    printf("%d,",code2[i]);
+	  printf("\n");
+	  //  exit(1);
+	  
+	  wait();
+
+	  
+	  vec ef={0},gh={0};
+	          //code2
+	  f = synd (code2);
+	  //exit(1);
+	  
+	  f=conv(f);
+	  printpol(o2v(f));
+	  printf("\n");
+
+	  /*
+	  //exit(1);
+	  ef=o2v(f);
+	  for(i=0;i<K;i++){
+	  for(k=0;k<K;k++)
+	  gh.x[i]^=gf[mlt(fg[inv_S[k][i]],fg[ef.x[k]])];
+	  }
+	  f=v2o(gh);
+	  f=conv(f);
+	  //exit(1);
+	  */
+
+	  count = 0;
+	  /*
+	    count = 0;
+	    for (i = 0; i < N; i++)
+	    {
+	    if (zz[i] > 0)
+	    count++;
+	    }
+	    printf ("%d\n", count);
+	  */
+	  printpol(o2v(w));
+	  printf(" ==========goppa\n");
+	  printpol(o2v(f));
+	  printf(" ==========synd\n");
+
+      //exit(1);
+	  
       r = decode (w, f);
 
+      for(i=0;i<N;i++)
+	printf("%d,",zz[i]);
+      printf("\n");
+      wait();
       for (i = 0; i < T; i++)
         {
+	  if(i==0)
+	    printf("i==0 %d\n",r.t[i].a);
+	    
           if (r.t[i].a > 0 && count > 0)        // == r.t[i].n)
             {
               printf ("e=%d %d %d %s\n", i,r.t[i].a, r.t[i].n, "お");
@@ -3848,9 +4013,20 @@ lab:
       if (count != T)
         {
           printf ("error pattarn too few %d\n", count);
+	  for(i=0;i<N;i++)
+	    printf("%d,",zz[i]);
+	  printf("\n");
+	  
+	  unsigned short e[N]={0},mm[N]={0};
+	  for(i=0;i<N;i++){
+	    for(j=0;j<N;j++)
+	      e[i]^=gf[mlt(fg[zz[j]],fg[invP[j][i]])];
+	    printf("%d,",e[i]);
+	  }
+	  printf("\n");
           exit (1);
         }
-
+      
       printf ("err=%dっ！！\n", count);
       if(count<T)
 	{
@@ -3858,23 +4034,31 @@ lab:
 	  printf("%d baka1\n",count);
 	  exit(1);
 	}
-      
-      ef=o2v(r);
-      for(i=0;i<N;i++)
-	printf("e=%d\n",ef.x[i]);
-      printf("\n\n");
 
-      memset(gh.x,0,sizeof(gh.x));
+
+      ef=o2v(r);
       for(i=0;i<N;i++){
-	for(j=0;j<N;j++){
-	  gh.x[i]^=gf[mlt(fg[ef.x[j]],fg[invP[i][j]])];
-	}
+	printf("e=%d\n",ef.x[i]);
+	//code2[i]^=ef.x[i];
       }
-      
-      for(i=0;i<N;i++){
-	if(gh.x[i]>0)
-	  printf("e=%d %d\n",i,gh.x[i]);
+      printf("\n\n");
+      printf("code2\n");
+      for(i=0;i<N;i++)
+	printf("%d,",code2[i]);
+      printf("\n");
+
+      unsigned short tt[K]={0},t3[K]={0};
+      for(i=0;i<K;i++)
+	tt[i]=code2[i]^ef.x[i];
+      printf("m=");
+      for(i=0;i<K;i++){
+	for(j=0;j<K;j++)
+	  t3[i]^=gf[mlt(fg[tt[j]],fg[inv_S[j][i]])];
+	printf("%d",t3[i]);
       }
+      printf("\n");
+      //exit(1);
+      wait();
       
       //exit(1);
       //goto label;
@@ -3888,9 +4072,9 @@ lab:
       //wait();
       count=0;
       memset (z1, 0, sizeof (z1));
-      memset(code,0, sizeof (z1));
+      memset(code,0, sizeof (code));
       for(i=0;i<N;i++)
-	code[i]=G.x[2][i];
+	code[i]=G.y[i][2];
       j = 0;
       
       while (j < T * 2)
@@ -3905,18 +4089,29 @@ lab:
             }
         }
       //wait();
-      for(i=0;i<N;i++)
+      unsigned short code2[N]={0};
+      printf("code\n");
+      for(i=0;i<N;i++){
 	code[i]^=z1[i];
-
+	printf("%d,",code[i]);
+      }
+      printf("\n");
+      printf("code2\n");
+      for(i=0;i<N;i++){
+	for(j=0;j<N;j++)
+	  code2[i]^=gf[mlt(fg[code[j]],fg[invP[j][i]])];
+	printf("%d,",code2[i]);
+      }
+      printf("\n");
       //for(i=0;i<8;i++)
       //z1[i]=1;
 
       //encryotion
       //test (w, z1);
-      memcpy(mat,mat2,sizeof(mat));
+      //memcpy(mat,mat2,sizeof(mat));
 
-      f = synd (code);
-      
+      f = synd (code2);
+      /*
       memset(gh.x,0,sizeof(gh.x));
       ef=o2v(f);
       for(i=0;i<K;i++){
@@ -3925,7 +4120,7 @@ lab:
       }
       f=v2o(gh);
       f=conv(f);
-      
+      */
       
       //バグトラップのためのコード（省略）
       //trap(w,f);
@@ -3935,34 +4130,6 @@ lab:
       //復号化の本体
       v = pattarson (w, f);
 
-      
-      memset(gh.x,0,sizeof(gh.x));
-      memset(ef.x,0,sizeof(ef.x));
-      //for(i=0;i<N;i++)
-      //printf("pos=%d\n",v.x[i]);
-
-      for(i=0;i<N;i++){
-	if(i==0)
-	  gh.x[v.x[i]]=1;
-	if(v.x[i]>0 && i>0)
-	  gh.x[v.x[i]]=1;
-      }
-      
-      //for(i=0;i<N;i++)
-      //printf("gh=%d\n",gh.x[i]);
-
-      for(i=0;i<N;i++){
-	for(j=0;j<N;j++){
-	  ef.x[i]^=(gh.x[j]&invP[i][j]);
-	}
-      }
-
-      for(i=0;i<N;i++){
-	if(ef.x[i]>0)
-	printf("e=%d %d\n",i,ef.x[i]);
-      }
-      exit(1);
-      
       
       //エラー表示
       for (i = 0; i < T * 2; i++)
@@ -3991,12 +4158,34 @@ lab:
 	      //
               //exit (1);
             }
-
         }
       
       if(count==T*2){
       printf ("err=%dっ!! \n", count);
       B++;
+      unsigned short e[N]={0},mm[N]={0},x[K]={0};
+      for(i=0;i<K;i++)
+	e[v.x[i]]=1;
+      for(i=0;i<N;i++)
+	printf("%d,",code2[i]);
+      printf(" ========code2\n");
+      printf("m'=");
+      for(i=0;i<N;i++){
+	mm[i]=code2[i]^e[i];
+	printf("%d,",mm[i]);
+      }
+      printf("\n");
+      //wait();
+      for(i=0;i<K;i++)
+	x[i]=mm[i];
+      printf("m=");
+      for(i=0;i<K;i++){
+	for(k=0;k<K;k++)
+	  gh.x[i]^=gf[mlt(fg[inv_S[k][i]],fg[x[k]])];
+	printf("%d,",gh.x[i]);
+      }
+      printf("\n");
+		  
       }
       if (count < T * 2){
         printf ("error is too few\n");
@@ -4030,7 +4219,7 @@ lab:
       //exit(1);
       //goto lab;
       //wait();
-
+      
       break;
       }
 
