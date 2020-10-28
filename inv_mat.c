@@ -401,8 +401,9 @@ printf("行列を出力\n ={\n");
    for(j=0;j<N;j++)
      s[i]^=gf[mlt(fg[ss[j]],fg[code.x[i][j]])];
  }
- //パリティチェック行列:code(matのコピーなので)
- pMAT(code,K,N.0);
+ 
+ printf("パリティチェック行列:code(matのコピーなので)\n");
+ pMAT(code,K,N,0);
  
  //シンドローム
  printf("syn=");
