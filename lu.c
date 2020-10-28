@@ -167,7 +167,7 @@ for(i=0;i<F;i++){
 for(i=0;i<F;i++){
  for(j=0;j<F;j++){
   printf(" %d,",inv_a[i][j]);
-  S.w[i][j]=inv_a[i][j];
+  S.y[i][j]=inv_a[i][j];
  }
  printf("\n");
  }
@@ -218,7 +218,7 @@ for(i=0;i<F;i++){
     for(j=0;j<F;j++){
       printf("%d,",cl[i][j]);
       dd[j]=cl[i][j];
-      S.z[i][j]=cl[i][j];
+      S.x[i][j]=cl[i][j];
     }
   
     printf("},\n");
@@ -246,7 +246,7 @@ for(i=0;i<F;i++){
     for(j=0;j<F;j++){
       printf("%d,",inv_a[i][j]);
       dd[j]=inv_a[i][j];
-      S.w[i][j]=inv_a[i][j];
+      S.y[i][j]=inv_a[i][j];
     }
     printf("},\n");
   }
