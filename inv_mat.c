@@ -7,10 +7,13 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 #define MAXN 4
 #define N 16 //order of GF(q)
 #define F 8  //dimension of matrix
 
+
+unsigned short mat[N][K]={0};
 //elements of GF16
 //static const unsigned char gf[N]={0,1,2,4,8,9,11,15,7,14,5,10,13,3,6,12};
 //index of GF16
@@ -193,20 +196,65 @@ unsigned short cc[N][N]={0};
   //exit(1); 
 }
 
+MAT invMAT(MAT a,MAT inv_a){
+  int i,j,k,n;
+  MAT invM={0};
+  unsigned short buf; //一時的なデータを蓄える
 
-unsigned short c2[K][N]={0};
+  n=F;
+  memcpy(invM.x,a.x,sizeof(invM.x));
+
+  //単位行列を作る
+for(i=0;i<n;i++){
+ for(j=0;j<n;j++){
+ inv_a.x[i][j]=(i==j)?1:0;
+ }
+}
+//掃き出し法
+for(i=0;i<n;i++){
+  buf=gf[Inv(fg[a.x[i][i]])];
+ for(j=0;j<n;j++){
+   a.x[i][j]=gf[mlt(fg[buf],fg[a.x[i][j]])];
+   inv_a.x[i][j]=gf[mlt(fg[buf],fg[inv_a.x[i][j]])];
+}
+for(j=0;j<n;j++){
+ if(i!=j){
+  buf=a.x[j][i];
+  for(k=0;k<n;k++){
+    a.x[j][k]^=gf[mlt(fg[a.x[i][k]],fg[buf])];
+    inv_a.x[j][k]^=gf[mlt(fg[inv_a.x[i][k]],fg[buf])];
+  }
+ }
+ }
+ }
+  memcpy(invM.y,inv_a.x,sizeof(invM.y));
+
+  return invM;
+}
+
+//停止コマンド
+void
+wait (void)
+{
+  int n;                        // 読み込む変数はローカルに取るべし
+  printf (" (enter number and hit return) ");   // 何か表示させたほうが良いだろう
+  fflush (stdout);              // just in case
+  scanf ("%d", &n);             // fgets(line, LINESIZE, stdin); という手も
+}
+
 //inverse matrix (生成行列を返す)
 MAT matinv(){ 
-  unsigned short a[F][F]; //={{1,2,0,1},{1,1,2,0},{2,0,1,1},{1,2,1,1}}; //入力用の配列
-unsigned short inv_a[F][F]; //ここに逆行列が入る
+  MAT a={0}; //={{1,2,0,1},{1,1,2,0},{2,0,1,1},{1,2,1,1}}; //入力用の配列
+  MAT inv_a={0}; //ここに逆行列が入る
 unsigned short buf; //一時的なデータを蓄える
  unsigned short b[N][N]={0},dd[N][N]={0};
  int i,j,k,count; //カウンタ
  int n=F;
-unsigned short c[N][N]={0};
-
+ MAT c={0};
+ MAT c2={0};
+ MAT A={0};
  unsigned short cc[N][N]={0};
- unsigned short code[K][N]={0};
+ MAT code={0};
  MAT GG={0};
  //GG.col=K;
  //GG.low=N;
@@ -214,57 +262,63 @@ unsigned short c[N][N]={0};
  
  lab:
  
+ for(i=0;i<K;i++){
+   for(j=0;j<N;j++)
+     printf("%2d,",mat[j][i]);
+   printf("\n");
+ }
+    printf("\n");
+ 
  
  //転置
+    for(i=0;i<K;i++){
+      for(j=0;j<N;j++){
+	code.x[i][j]=mat[j][i];
+	printf("%d,",code.x[i][j]);
+	}
+      printf("\n");
+    }
+    printf("\n");
+    //exit(1);
+    // code.x[][]= N2K(mat);
+ /*
  for(i=0;i<K;i++){
    for(j=0;j<N;j++)
      code[i][j]=mat[j][i];
  }
- 
+ */
+    //codeの後半部分をaにコピー
  for(i=0;i<F;i++){
    for(j=0;j<F;j++){
-     a[i][j]=code[i][K+j]; //rand()%N;
-     //printf("%d,",a[i][j]);
+     a.x[i][j]=code.x[i][K+j]; //rand()%N;
+     printf("a%d,",a.x[i][j]);
    }
    //printf("\n");
  }
- 
+ // wait();
 
- // printf("\n");
+
+ //aをcにコピー
+ for(i=0;i<F;i++){
+   for(j=0;j<F;j++)
+     c.x[i][j]=a.x[i][j];
+     }
+ // memcpy(c,a,sizeof(c));
+ // memcpy(c,a,sizeof(c));
+ /*
  for(i=0;i<n;i++){
    for(j=0;j<F;j++)
      c[i][j]=a[i][j];
  }
-//単位行列を作る
-for(i=0;i<n;i++){
- for(j=0;j<n;j++){
- inv_a[i][j]=(i==j)?1:0;
- }
-}
-//掃き出し法
-for(i=0;i<n;i++){
-  buf=gf[Inv(fg[a[i][i]])];
- for(j=0;j<n;j++){
-   a[i][j]=gf[mlt(fg[buf],fg[a[i][j]])];
-   inv_a[i][j]=gf[mlt(fg[buf],fg[inv_a[i][j]])];
-}
-for(j=0;j<n;j++){
- if(i!=j){
-  buf=a[j][i];
-  for(k=0;k<n;k++){
-    a[j][k]^=gf[mlt(fg[a[i][k]],fg[buf])];
-    inv_a[j][k]^=gf[mlt(fg[inv_a[i][k]],fg[buf])];
-  }
- }
- }
- }
-
+ */
+ //aの逆行列をinv_cを経由してA.yに代入A.xにはaが入る
+ A=invMAT(a,inv_a);
 
  // printf("\n\n逆行列を出力\n");
  for(i=0;i<n;i++){
   count=0;
  for(j=0;j<n;j++){
-   if(inv_a[i][j]==0)
+   if(A.y[i][j]==0)
      count++;
    if(count==n){
      printf("\nbaka\n\n");
@@ -276,42 +330,18 @@ for(j=0;j<n;j++){
 }
 
 printf("行列を出力\n ={\n");
- for(i=0;i<n;i++){
-   printf("{");
-   for(j=0;j<n;j++){
-     //a[i][j]=rand()%N;
-     printf("%3d,",c[i][j]);
-   }
-   printf("},\n");
- }
- printf("};");
-
+ pMAT(A,F,F,0);
  
  printf("\n逆行列を出力\n ={\n");
- for(i=0;i<n;i++){
-   count=0;
-   printf("{");
-   for(j=0;j<n;j++){
-     if(inv_a[i][j]==0)
-       count++;
-     if(count==n){
-       printf("\nbaka\n\n");
-       goto lab;
-     }
-     //GG.y[i][j]=inv_a[i][j];
-     printf("%3d,",inv_a[i][j]);
-   }
-   printf("},\n");
- }
- printf("};\n");
- //exit(1); 
-//検算
+ pMAT(A,F,F,1);
+
+ //検算(A.xとA.y(Aの逆行列)をかけて検算。正しければbは単位行列)
  for(i=0;i<n;i++){
    for(j=0;j<n;j++){
      for(k=0;k<n;k++)
-       b[i][j]^=gf[mlt(fg[c[i][k]],fg[inv_a[k][j]])];
+       b[i][j]^=gf[mlt(fg[A.x[i][k]],fg[A.y[k][j]])];
 
-     printf("%d,",b[i][j]);
+     printf("b%d,",b[i][j]);
      // if(j==i && b[i][j]!=1 && j!=i && b[i][j]>0)
      //goto lab;
      
@@ -323,40 +353,34 @@ printf("行列を出力\n ={\n");
  for(i=0;i<n;i++){
    for(j=0;j<N;j++){
      for(k=0;k<n;k++)
-       c2[i][j]^=gf[mlt(fg[code[k][j]],fg[inv_a[i][k]])];
-
-     //printf("%2d,",c2[i][j]);
+       c2.x[i][j]^=gf[mlt(fg[code.x[k][j]],fg[A.y[i][k]])];
+   
+     printf("c2%2d,",c2.x[i][j]);
      // if(j==i && b[i][j]!=1 && j!=i && b[i][j]>0)
      //goto lab;
        
    }
    //
  }
+ memcpy(GG.x,code.x,sizeof(code.x));
+ wait();
  printf("\n");
- 
- for(i=0;i<K;i++){
-   for(j=0;j<N;j++)
-     printf("%2d,",c2[i][j]);
-   printf("\n");
- }
- printf("\n");
- 
+ pMAT(c2,K,N,0);
+
  for(i=0;i<K;i++){
    for(j=0;j<K;j++)
-     GG.x[i][j]=c2[j][K+i];
+     GG.x[i][j]=c2.x[j][K+i];
  }
  for(i=0;i<K;i++){
    for(j=0;j<K;j++)
-     GG.x[i][j+K]=c2[j][i];
+     GG.x[i][j+K]=c2.x[j][i];
  }
+
  printf("生成行列GG.x!\n");
- for(i=0;i<K;i++){
-   for(j=0;j<N;j++)
-     printf("%2d,",GG.x[i][j]);
-   printf("\n");
- }
- printf("\n");
- //exit(1);
+ pMAT(GG,K,N,0);
+ 
+ wait();
+
  unsigned short ss[N]={0};
  unsigned short s[K]={0};
  /* 
@@ -366,20 +390,19 @@ printf("行列を出力\n ={\n");
  */
  for(i=0;i<N;i++)
    ss[i]=GG.x[0][i]^GG.x[1][i]^GG.x[2][i]^GG.x[3][i];
- // for(i=0;i<4;i++)
- //ss[i]^=1;
+  for(i=0;i<4;i++)
+    ss[i]^=1;
 
+ pMAT(code,K,N,0);
+ wait();
+
+ 
  for(i=0;i<K;i++){
    for(j=0;j<N;j++)
-     s[i]^=gf[mlt(fg[ss[j]],fg[code[i][j]])];
+     s[i]^=gf[mlt(fg[ss[j]],fg[code.x[i][j]])];
  }
- //パリティチェック行列:code
- for(i=0;i<K;i++){
-   for(j=0;j<N;j++)
-     printf("%2d,",code[i][j]);
-   printf("\n");
- }
- printf("\n");
+ //パリティチェック行列:code(matのコピーなので)
+ pMAT(code,K,N.0);
  
  //シンドローム
  printf("syn=");
