@@ -3467,7 +3467,7 @@ unsigned short inv_S[K][K]=
   //  memcpy(mat,mat2,sizeof(mat));
   printf("matinv\n");
   G=matinv ();
-  pMAT(G,K,N);
+  pMAT(G,K,N,0);
   wait();
 
     
@@ -3512,7 +3512,7 @@ unsigned short inv_S[K][K]=
   printf("\n");
   wait();
 
-  //memcpy(G.y,mat2,sizeof(G.y));
+
   unsigned code[N]={0},code2[N]={0},code3[N]={0};
   for(i=0;i<N;i++)
     code[i]=G.y[i][0];
@@ -3800,7 +3800,7 @@ lab:
 
       G=genSGP();
       printf("after SG\n");
-      pMAT(G,K,N);
+      pMAT(G,K,N,0);
       wait();      
       
       //置換の確認
@@ -3813,7 +3813,7 @@ lab:
 	}
       }
       printf("after invP\n");
-      pMAT(gen,N,K);
+      pMAT(gen,N,K,0);
       wait();
 
       for(j=0;j<N;j++){
@@ -3823,17 +3823,19 @@ lab:
 	}
       }
       printf("after inv_S\n");
-      pMAT(mat3,N,K);
+      pMAT(mat3,N,K,0);
       wait();
       
       printf("decode of G\n");
-      pMAT(gen,N,K);
+      pMAT(gen,N,K,0);
       //exit(1);
       
       
       printf("original\n");
-      pMAT(G,K,N);
-      //exit(1);      
+      pMAT(G,K,N,0);
+      //exit(1);
+      
+      
       
 
       printf("gen2mat\n");
@@ -3844,7 +3846,10 @@ lab:
       }
       //exit(1);
       
-       
+      
+      
+      
+      
       unsigned short code[N]={0},code2[N]={0},code3[N]={0};
       
       
@@ -3929,8 +3934,28 @@ lab:
 	  printpol(o2v(f));
 	  printf("\n");
 
+	  /*
+	  //exit(1);
+	  ef=o2v(f);
+	  for(i=0;i<K;i++){
+	  for(k=0;k<K;k++)
+	  gh.x[i]^=gf[mlt(fg[inv_S[k][i]],fg[ef.x[k]])];
+	  }
+	  f=v2o(gh);
+	  f=conv(f);
+	  //exit(1);
+	  */
 
 	  count = 0;
+	  /*
+	    count = 0;
+	    for (i = 0; i < N; i++)
+	    {
+	    if (zz[i] > 0)
+	    count++;
+	    }
+	    printf ("%d\n", count);
+	  */
 	  printpol(o2v(w));
 	  printf(" ==========goppa\n");
 	  printpol(o2v(f));
