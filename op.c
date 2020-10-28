@@ -1572,34 +1572,42 @@ deg (vec a)
 
 //整数からベクトル型への変換
 vec
-i2v (unsigned int n)
+i2v (unsigned short n)
 {
-  vec v;
+  vec v={0};
   int i;
 
-
-  for (i = 0; i < 32; i++)
+  if(n>M){
+    printf("too big\n");
+    exit(1);
+  }
+  printf("n=%d\n",n);
+  for (i = 0; i < E; i++)
     {
       v.x[i] = n % 2;
       n = (n >> 1);
     }
+  for(i=0;i<E;i++)
+    printf("%d",v.x[i]);
+  printf("\n");
+  printf("%b",n);
 
-
+  
   return v;
 }
 
 
 //ベクトル型から整数への変換
-unsigned int
+unsigned short
 v2i (vec v)
 {
   unsigned int d = 0, i;
 
 
-  for (i = 0; i < 32; i++)
+  for (i = 0; i < E; i++)
     {
-      d = (d << 1);
-      d ^= v.x[i];
+      if(v.x[i]==1)
+	d^=(1<<i);
     }
 
 
@@ -3452,19 +3460,14 @@ unsigned short inv_S[K][K]=
 
 
   printf("gen\n");
-  unsigned short gen[N][K]={0};
-  unsigned short mat2[N][K]={0},mat3[N][K]={0};
+  MAT gen={0};
+  MAT mat2={0},mat3={0};
   MAT G2={0};
   
   //  memcpy(mat,mat2,sizeof(mat));
   printf("matinv\n");
   G=matinv ();
-  for(i=0;i<K;i++){
-    for(j=0;j<N;j++)
-      printf("%02d,",G.x[i][j]);
-    printf("\n");
-  }
-  printf("\n");
+  pMAT(G,K,N);
   wait();
 
     
@@ -3485,7 +3488,7 @@ unsigned short inv_S[K][K]=
   for(i=0;i<K;i++){
     for(j=0;j<M;j++){
       for(k=0;k<M;k++)       //gen
-	mat2[j][i]^=gf[mlt(fg[G2.x[k][i]],fg[P[k][j]])];
+	mat2.x[j][i]^=gf[mlt(fg[G2.x[k][i]],fg[P[k][j]])];
       //G.y[j][i]=mat2[j][i];
       printf("%2d,",mat[j][i]);
 
@@ -3499,10 +3502,10 @@ unsigned short inv_S[K][K]=
   for(i=0;i<K;i++){
     for(j=0;j<D;j++){
       for(k=0;k<K;k++){
-	gen[j][i]^=gf[mlt(fg[S[i][k]],fg[mat2[j][k]])];
+	gen.x[j][i]^=gf[mlt(fg[S[i][k]],fg[mat2.x[j][k]])];
       }
-      printf("%2d,",gen[j][i]);
-      G.y[j][i]=gen[j][i];
+      printf("%2d,",gen.x[j][i]);
+      G.y[j][i]=gen.x[j][i];
     }
     printf("\n");
   }
@@ -3681,12 +3684,16 @@ unsigned char inv_S[K][K]=
    {0,0,1,1,1,1,1,1,1,1,1,1}
   };
 */
+  //N,K
+  MAT gen={0};
+  MAT mat2={0},mat3={0};
+  unsigned short q=10,p;
 
-  unsigned short gen[N][K]={0};
-  unsigned short mat2[N][K]={0},mat3[N][K]={0};
+  
+  //printf("%d\n",v2i(i2v(65535)));
+  //exit(1);
 
- 
-//公開鍵matはグローバル変数でスタック領域に取る。
+  //公開鍵matはグローバル変数でスタック領域に取る。
 //ヒープ領域は使うときはここを有効にしてください。
 /*
   mat = malloc (N * sizeof (unsigned short *));
@@ -3793,14 +3800,7 @@ lab:
 
       G=genSGP();
       printf("after SG\n");
-      for(i=0;i<K;i++){
-	for(j=0;j<N;j++){
-	  printf("%2d,",G.y[j][i]);
-	  
-	}
-	printf("\n");
-      }
-      //exit(1);
+      pMAT(G,K,N);
       wait();      
       
       //置換の確認
@@ -3809,57 +3809,31 @@ lab:
       for(i=0;i<K;i++){
 	for(j=0;j<N;j++){
 	  for(k=0;k<N;k++)
-	    gen[j][i]^=gf[mlt(fg[G.y[k][i]],fg[invP[k][j]])];
+	    gen.x[j][i]^=gf[mlt(fg[G.y[k][i]],fg[invP[k][j]])];
 	}
       }
       printf("after invP\n");
-      for(j=0;j<K;j++){
-	for(i=0;i<N;i++)
-	  printf("%d,",gen[i][j]);
-	printf("\n");
-      }
-      printf("\n");
+      pMAT(gen,N,K);
       wait();
 
       for(j=0;j<N;j++){
 	for(i=0;i<K;i++){
 	  for(k=0;k<K;k++)
-	    mat3[j][i]^=gf[mlt(fg[inv_S[i][k]],fg[gen[j][k]])];
+	    mat3.x[j][i]^=gf[mlt(fg[inv_S[i][k]],fg[gen.x[j][k]])];
 	}
       }
       printf("after inv_S\n");
-      for(j=0;j<K;j++){
-	for(i=0;i<N;i++)
-	  printf("%d,",mat3[i][j]);
-	printf("\n");
-      }
-      printf("\n");
+      pMAT(mat3,N,K);
       wait();
       
       printf("decode of G\n");
-      for(j=0;j<K;j++){
-	for(i=0;i<N;i++)
-	  printf("%d,",gen[i][j]);
-	printf("\n");
-      }
-      printf("\n");
+      pMAT(gen,N,K);
       //exit(1);
       
       
       printf("original\n");
-      for(j=0;j<K;j++){
-	for(i=0;i<N;i++)
-	  printf("%2d,",G.x[j][i]);
-	printf("\n");
-      }
-      printf("\n");
-      //exit(1);
-      
-      
-      //for(i=K;i<N;i++)
-      //mat[i][i-K]^=1;
-      //memcpy(mat,mat2,sizeof(mat));
-      
+      pMAT(G,K,N);
+      //exit(1);      
       
 
       printf("gen2mat\n");
@@ -3870,10 +3844,7 @@ lab:
       }
       //exit(1);
       
-      
-      
-      
-      
+       
       unsigned short code[N]={0},code2[N]={0},code3[N]={0};
       
       
@@ -3958,28 +3929,8 @@ lab:
 	  printpol(o2v(f));
 	  printf("\n");
 
-	  /*
-	  //exit(1);
-	  ef=o2v(f);
-	  for(i=0;i<K;i++){
-	  for(k=0;k<K;k++)
-	  gh.x[i]^=gf[mlt(fg[inv_S[k][i]],fg[ef.x[k]])];
-	  }
-	  f=v2o(gh);
-	  f=conv(f);
-	  //exit(1);
-	  */
 
 	  count = 0;
-	  /*
-	    count = 0;
-	    for (i = 0; i < N; i++)
-	    {
-	    if (zz[i] > 0)
-	    count++;
-	    }
-	    printf ("%d\n", count);
-	  */
 	  printpol(o2v(w));
 	  printf(" ==========goppa\n");
 	  printpol(o2v(f));
