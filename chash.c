@@ -144,7 +144,8 @@ return 1;
   return i;
 }
 
-MAT _T(unsigned short A[N][K]){
+
+MAT N2K(unsigned short A[N][K]){
   MAT B={0};
   int i,j;
 
@@ -156,4 +157,58 @@ MAT _T(unsigned short A[N][K]){
   return B;
 }
 
+//
+MAT K2N(unsigned short A[K][N]){
+  int i,j;
+  MAT G={0};
+  
+  for(i=0;i<K;i++){
+    for(j=0;j<N;j++)
+      G.x[j][i]=A[i][j];
+  }
+
+  return G;
+}
+
+void pMAT(MAT A,int k,int n,int a){
+  int i,j;
+
+  if(a==0){
+  if(k>n){
+    for(i=0;i<n;i++){
+      for(j=0;j<k;j++)
+	printf("%d,",A.x[j][i]);
+      printf("\n");
+    }
+    printf("\n");
+  }
+  if(n==k || k<n){
+    for(i=0;i<k;i++){
+      for(j=0;j<n;j++)
+	printf("%d,",A.x[i][j]);
+      printf("\n");
+    }
+    printf("\n");
+  }
+  }
+  if(a==1){
+    if(k>n){
+      for(i=0;i<n;i++){
+	for(j=0;j<k;j++)
+	  printf("%d,",A.y[j][i]);
+	printf("\n");
+      }
+      printf("\n");
+    }
+    if(n==k || k<n){
+      for(i=0;i<k;i++){
+	for(j=0;j<n;j++)
+	  printf("%d,",A.y[i][j]);
+	printf("\n");
+      }
+      printf("\n");
+    }
+  }
+
+}
 
