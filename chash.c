@@ -36,8 +36,6 @@ typedef struct pub {
 typedef struct {
   unsigned short x[N][N];
   unsigned short y[N][N];
-  unsigned short z[K][K];
-  unsigned short w[K][K];
 } MAT;
 
 typedef struct {
@@ -150,10 +148,14 @@ MAT N2K(unsigned short A[N][K]){
   int i,j;
 
   for(i=0;i<K;i++){
-    for(j=0;j<N;j++)
+    for(j=0;j<N;j++){
       B.x[i][j]=A[j][i];
+    printf("%2d,",B.x[i][j]);
+    }
+    printf("\n");
       }
-
+    printf("\n");
+    
   return B;
 }
 
