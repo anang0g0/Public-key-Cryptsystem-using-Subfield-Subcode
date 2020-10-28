@@ -34,11 +34,15 @@
 #include <omp.h>                //clang-10
 
 #include "debug.c"
-//#include "8192.h"
 #include "global.h"
+#include "chash.c"
+
+
+//#include "8192.h"
+
 #include "struct.h"
 
-#include "chash.c"
+
 #include "lu.c"
 #include "sha3.c"
 #include "inv_mat.c"
@@ -50,6 +54,8 @@ extern unsigned long xor128 (void);
 extern int mlt (int x, int y);
 extern int mltn (int n, int a);
 extern MAT makeS ();
+
+
 
 //#pragma omp threadprivate(mat)
 //シンドロームのコピー
@@ -150,15 +156,7 @@ v2o (vec a)
 }
 
 
-//停止コマンド
-void
-wait (void)
-{
-  int n;                        // 読み込む変数はローカルに取るべし
-  printf (" (enter number and hit return) ");   // 何か表示させたほうが良いだろう
-  fflush (stdout);              // just in case
-  scanf ("%d", &n);             // fgets(line, LINESIZE, stdin); という手も
-}
+
 
 
 //OP型を正規化する
