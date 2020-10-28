@@ -1950,7 +1950,7 @@ decode (OP f, OP s)
 
   for (i = 0; i < j; i++)
     {
-      if (x.x[i] >= 0)
+      if (x.x[i] > 0 || (i==0 && x.x[i]==0))
         {
           e.t[i].a =
             gf[mlt (fg[trace (hh.d, x.x[i])], oinv (trace (l, x.x[i])))];
