@@ -148,7 +148,7 @@ MAT N2K(unsigned short A[N][K]){
   for(i=0;i<K;i++){
     for(j=0;j<N;j++){
       B.x[i][j]=A[j][i];
-    printf("%2d,",B.x[i][j]);
+      printf("%2d,",B.x[i][j]);
     }
     printf("\n");
       }
@@ -173,9 +173,9 @@ MAT K2N(unsigned short A[K][N]){
   return G;
 }
 
-NTT N2M(MAT A,int k){
+MAT N2M(MAT A,int k){
   int i,j;
-  NTT G={0};
+  MAT G={0};
   
 
   for(i=0;i<k;i++){
@@ -186,7 +186,7 @@ NTT N2M(MAT A,int k){
   return G;
 }
 
-MAT M2N(NTT A,int n){
+MAT M2N(MAT A,int n){
   int i,j;
   MAT G={0};
   
