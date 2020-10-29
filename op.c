@@ -3461,7 +3461,8 @@ unsigned short inv_S[K][K]=
   MAT gen={0};
   MAT mat2={0},mat3={0};
   MAT G2={0};
-  
+
+ 
   //  memcpy(mat,mat2,sizeof(mat));
   printf("matinv\n");
   G=matinv ();
@@ -3649,7 +3650,30 @@ unsigned short inv_S[K][K]=
    {0,0,0,0,0,0,0,1,},
   };
 
+// MAT ef={0},ji={0};
+// MAT pp={0};
 
+ /*
+ memcpy(ef.x,P,sizeof(ef.x));
+ pMAT(ef,N,N,0);
+
+ 
+ ji=invMAT(ef,N);
+ pMAT(ji,N,N,0);
+ wait();
+ pMAT(ji,N,N,1);
+ wait();
+ 
+ for(i=0;i<N;i++){
+   for(j=0;j<N;j++){
+     for(k=0;k<N;k++)
+       pp.x[i][j]^=gf[mlt(P[i][k],ji.y[k][j])];
+   }
+ }
+ pMAT(pp,N,N,0);
+ */
+ //exit(1);
+ //invMAT(S,A)
 /*
    unsigned char S[K][K]=
       {
@@ -3786,7 +3810,7 @@ label:
       i = deta (g);
     }
   while (i < 0);
-  
+
   //unsigned short gen[N][K]={0};
 
 lab:
@@ -3795,11 +3819,12 @@ lab:
 
   //makeS();
   //exit(1);
-
-      G=genSGP();
-      printf("after SG\n");
-      pMAT(G,K,N,0);
-      wait();      
+  printf("before SG\n");
+  wait();  
+  G=genSGP();
+  printf("after SG\n");
+  pMAT(G,K,N,0);
+  wait();      
       
       //置換の確認
       //memset(mat,0,sizeof(mat2));
