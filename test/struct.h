@@ -73,9 +73,9 @@ typedef struct {
   unsigned char y[K][K];
 } NTT;
 
+
 typedef struct {
   unsigned short x[N][N];
-  int low;
-  int col;
-} NEC;
-
+  int row; //行
+  int col; //列
+} MTX;
