@@ -30,17 +30,17 @@
 #include <execinfo.h>
 
 
+
 //#include "omp.h" //clang-12
 #include <omp.h>                //clang-10
 
 #include "debug.c"
 #include "global.h"
+#include "struct.h"
 #include "chash.c"
 
 
 //#include "8192.h"
-
-#include "struct.h"
 
 
 #include "lu.c"
