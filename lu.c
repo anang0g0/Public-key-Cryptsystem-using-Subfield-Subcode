@@ -62,7 +62,7 @@ void g2(){
   }
 }
 
-
+//スクランブル行列Sを生成
 MAT makeS(){
   int i,j,k,l;
   unsigned char **b;
