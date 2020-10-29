@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <assert.h>
 
+/*
 #define N 16
 #define K 8
 #include "global.h"
 #include "chash.c"
 #include "inv_mat.c"
 #include "zech.c"
+*/
 
 typedef struct {
   unsigned short x[N][N];
