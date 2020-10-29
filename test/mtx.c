@@ -58,7 +58,7 @@ void mtx_print(char* str, MTX m){
 // ret = a*b
 MTX mtx_f2mul(MTX a, MTX b){
   assert(a.row==b.col);
-  assert(a.col==b.row);
+
   MTX ret = mtx_new(a.row, b.col);
   for(int r=0; r<a.row; r++){
     for(int c=0; c<b.col; c++){
