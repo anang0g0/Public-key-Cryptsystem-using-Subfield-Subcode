@@ -37,4 +37,45 @@ typedef union{ //test(SIMN)
   unsigned short s[16];
 } SU;
 
+typedef union {
+  unsigned long long int u[8];
+  unsigned char d[64];
+} arrayul;
+
+typedef struct a4 {
+  unsigned char ar[4];
+} array;
+
+typedef struct a8 {
+  unsigned char ar[8];
+} array8;
+
+typedef struct {
+  unsigned int h[16];
+} array16;
+
+typedef struct aN {
+  unsigned char ar[8192];
+} arrayn;
+
+typedef struct pub {
+  unsigned char a[8192];
+  unsigned char b[8192];
+} set;
+
+typedef struct {
+  unsigned short x[N][N];
+  unsigned short y[N][N];
+} MAT;
+
+typedef struct {
+  unsigned char x[K][K];
+  unsigned char y[K][K];
+} NTT;
+
+typedef struct {
+  unsigned short x[N][N];
+  int low;
+  int col;
+} NEC;
 
