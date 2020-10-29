@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <assert.h>
 
-#define N 16
-#define K 8
-#include "global.h"
-#include "chash.c"
-#include "inv_mat.c"
-#include "zech.c"
+//#define N 16
+//#define K 8
+//#include "global.h"
+//#include "chash.c"
+//#include "inv_mat.c"
+//#include "zech.c"
 
 typedef struct {
   unsigned short x[N][N];
-  int row;
-  int col;
+  int row; //行
+  int col; //列
 } MTX;
 
 MTX mtx_new(int row, int col){
@@ -142,6 +142,7 @@ void mtx_test2(){
   bb=mtx_f2mul(a,inv_a);
   mtx_print("E=",bb);
 }
-int main(void){
-  mtx_test2();
-}
+
+//int main(void){
+//mtx_test2();
+//}
