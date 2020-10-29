@@ -10,11 +10,13 @@
 #include "zech.c"
 */
 
+/*
 typedef struct {
   unsigned short x[N][N];
   int row;
   int col;
 } MTX;
+*/
 
 MTX mtx_new(int row, int col){
   MTX ret = {0};
