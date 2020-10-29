@@ -18,6 +18,13 @@ MTX MSM(MAT a,int k,int n){
   return b;
 }
 
+MAT SMS(MTX a){
+  MAT V;
+  
+  memcpy(V.x,a.x,sizeof(V.x));
+
+  return V;
+}
 
 
 //言わずもがな
