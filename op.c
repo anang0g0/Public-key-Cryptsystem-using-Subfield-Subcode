@@ -1584,16 +1584,16 @@ i2v (unsigned short n)
       printf ("too big\n");
       exit (1);
     }
-  printf ("n=%d\n", n);
+  // printf ("n=%d\n", n);
   for (i = 0; i < E; i++)
     {
       v.x[i] = n % 2;
       n = (n >> 1);
     }
-  for (i = 0; i < E; i++)
-    printf ("%d", v.x[i]);
-  printf ("\n");
-  printf ("%d", n);
+  //for (i = 0; i < E; i++)
+  //printf ("%d", v.x[i]);
+  //printf ("\n");
+  //printf ("%d", n);
 
 
   return v;
@@ -3451,14 +3451,14 @@ d2b (MTX Pub)
 {
   MTX z={0};
   int i, j, k;
-  vec v[K][N] = { 0 }, x = { 0 };
+  vec v[U][N] = { 0 }, x = { 0 };
   
   
-  z = mtx_new (E * K, N);
+  z = mtx_new (E * U, N);
   
-  for (j = 0; j < N; j++)
+  for (j = 0; j < Pub.col; j++)
     {
-      for (i = 0; i < K; i++)
+      for (i = 0; i < Pub.row; i++)
 	{
 	  x = i2v (Pub.x[i][j]);
 	  // printf("%d,i=%d j=%d",Pub.x[i][j],i,j);
@@ -3469,7 +3469,7 @@ d2b (MTX Pub)
 	    }
 	    z.x[i*E + k][j]=x.x[k];
 	  }
-	  printf("\n");
+	  //printf("\n");
 	}
       
     }
@@ -3488,8 +3488,8 @@ b2d (MTX d)
   int i, j, k;
   vec v = { 0 };
 
-  b = mtx_new (K, N);
-  for (i = 0; i < K; i++)
+  b = mtx_new (U, N);
+  for (i = 0; i < U; i++)
     {
       for (j = 0; j < N; j++)
 	{
@@ -3639,6 +3639,29 @@ X2M (MTX a)
   return V;
 }
 
+MTX Y2M(MAT X,int k,int n){
+  int i,j;
+  MTX Y;
+
+  Y=mtx_new(k,n);
+  memcpy(Y.x,X.y,sizeof(Y.x));
+
+  return Y;
+}
+
+
+MTX A2M(unsigned short O[N][K]){
+  int i,j;
+  MTX A;
+
+  A=mtx_new(N,K);
+  for(i=0;i<K;i++){
+    for(j=0;j<N;j++)
+      A.x[i][j]=O[j][i];
+  }
+
+  return A;
+}
 
 //言わずもがな
 int
@@ -3685,8 +3708,8 @@ main (void)
   MAT SGP={0},L={0},Q={0};
   MTX LL,MM;
 
-  LL=mtx_new(K,N);
-  MM=mtx_new(K,N);
+  LL=mtx_new(U,N);
+  MM=mtx_new(U,N);
   //printf("%d\n",v2i(i2v(65535)));
   //exit(1);
 
@@ -3824,11 +3847,15 @@ lab:
   pMAT(L,K,N,0);
   wait();
 
-  LL=M2X(L,K,N);
+  LL=M2X(L,U,N);
   printf("mtx_print=\n");
   mtx_print("LL=",LL);
   wait();
   LL=d2b(LL);
+  printf("col=%d row=%d\n",LL.col,LL.row);
+  printf("T=%d\n",T);
+  printf("bt=%d\n",U);
+  wait();
   mtx_print("d2b LL=",LL);
   MM=b2d(LL);
   mtx_print("b2d MM=",MM);
