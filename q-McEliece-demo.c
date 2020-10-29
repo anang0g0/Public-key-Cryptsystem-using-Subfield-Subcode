@@ -149,7 +149,7 @@ v2o (vec a)
   return f;
 }
 
-
+/*
 //停止コマンド
 void
 wait (void)
@@ -159,7 +159,7 @@ wait (void)
   fflush (stdout);              // just in case
   scanf ("%d", &n);             // fgets(line, LINESIZE, stdin); という手も
 }
-
+*/
 
 //OP型を正規化する
 OP
