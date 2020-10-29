@@ -271,63 +271,49 @@ unsigned short buf; //一時的なデータを蓄える
  
  
  //転置
-    for(i=0;i<K;i++){
-      for(j=0;j<N;j++){
-	code.x[i][j]=mat[j][i];
-	printf("%d,",code.x[i][j]);
-	}
-      printf("\n");
-    }
-    printf("\n");
-    //exit(1);
-    // code.x[][]= N2K(mat);
- /*
- for(i=0;i<K;i++){
-   for(j=0;j<N;j++)
-     code[i][j]=mat[j][i];
- }
- */
+    code= N2K(mat);
+    
     //codeの後半部分をaにコピー
- for(i=0;i<F;i++){
-   for(j=0;j<F;j++){
-     a.x[i][j]=code.x[i][K+j]; //rand()%N;
-     printf("a%d,",a.x[i][j]);
-   }
-   //printf("\n");
- }
- // wait();
-
-
- //aをcにコピー
- for(i=0;i<F;i++){
-   for(j=0;j<F;j++)
-     c.x[i][j]=a.x[i][j];
-     }
- // memcpy(c,a,sizeof(c));
- // memcpy(c,a,sizeof(c));
- /*
- for(i=0;i<n;i++){
-   for(j=0;j<F;j++)
-     c[i][j]=a[i][j];
- }
- */
- //aの逆行列をinv_cを経由してA.yに代入A.xにはaが入る
- A=invMAT(a,inv_a);
-
- // printf("\n\n逆行列を出力\n");
- for(i=0;i<n;i++){
-  count=0;
- for(j=0;j<n;j++){
-   if(A.y[i][j]==0)
-     count++;
-   if(count==n){
-     printf("\nbaka\n\n");
-     goto lab;
-   }
-   //printf(" %d",inv_a[i][j]);
- }
- //printf("\n");
-}
+    for(i=0;i<F;i++){
+      for(j=0;j<F;j++){
+	a.x[i][j]=code.x[i][K+j]; //rand()%N;
+	printf("a%d,",a.x[i][j]);
+      }
+      //printf("\n");
+    }
+    // wait();
+    
+    
+    //aをcにコピー
+    for(i=0;i<F;i++){
+      for(j=0;j<F;j++)
+	c.x[i][j]=a.x[i][j];
+    }
+    // memcpy(c,a,sizeof(c));
+    // memcpy(c,a,sizeof(c));
+    /*
+      for(i=0;i<n;i++){
+      for(j=0;j<F;j++)
+      c[i][j]=a[i][j];
+      }
+    */
+    //aの逆行列をinv_cを経由してA.yに代入A.xにはaが入る
+    A=invMAT(a,inv_a);
+    
+    // printf("\n\n逆行列を出力\n");
+    for(i=0;i<n;i++){
+      count=0;
+      for(j=0;j<n;j++){
+	if(A.y[i][j]==0)
+	  count++;
+	if(count==n){
+	  printf("\nbaka\n\n");
+	  goto lab;
+	}
+	//printf(" %d",inv_a[i][j]);
+      }
+      //printf("\n");
+    }
 
 printf("行列を出力\n ={\n");
  pMAT(A,F,F,0);
