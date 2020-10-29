@@ -3461,7 +3461,7 @@ d2b (MTX Pub)
       for (i = 0; i < K; i++)
 	{
 	  x = i2v (Pub.x[i][j]);
-	  printf("%d,i=%d j=%d",Pub.x[i][j],i,j);
+	  // printf("%d,i=%d j=%d",Pub.x[i][j],i,j);
 	  for (k = 0; k < E; k++){
 	    if(x.x[k]>1){
 	      printf("baka\n");
@@ -3481,14 +3481,6 @@ d2b (MTX Pub)
 }
 
 
-MAT d2b2(MAT R){
-  int i,j,k;
-  MAT TT={0};
-
-  
-  return TT;
-}
-
 MTX
 b2d (MTX d)
 {
@@ -3503,7 +3495,7 @@ b2d (MTX d)
 	{
 	  memset (v.x, 0, sizeof (v.x));
 	  for (k = 0; k < E; k++)
-	    v.x[k] = d.x[i * k + k][j];
+	    v.x[k] = d.x[i * E + k][j];
 	  b.x[i][j] = v2i (v);
 	}
     }
@@ -3691,9 +3683,10 @@ main (void)
   MAT mat2 = { 0 }, mat3 = { 0 };
   unsigned short q = 10, p;
   MAT SGP={0},L={0};
-  MTX LL;
+  MTX LL,MM;
 
   LL=mtx_new(K,N);
+  MM=mtx_new(K,N);
   //printf("%d\n",v2i(i2v(65535)));
   //exit(1);
 
@@ -3832,11 +3825,9 @@ lab:
   mtx_print("LL=",LL);
   wait();
     LL=d2b(LL);
-    for(i=0;i<N;i++){
-      for(j=0;j<E*K;j++)
-	printf("%d,",LL.x[j][i]);
-      printf("\n");
-    }
+  mtx_print("d2b LL=",LL);
+  MM=b2d(LL);
+  mtx_print("b2d MM=",MM);
     exit(1);
   mtx_print("SGPb=",LL);
   exit(1);
