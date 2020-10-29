@@ -1,6 +1,11 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
 # （間違えたら消します）
 
+# 20201029
+
+kuboon氏のmtx.c行列ライブラリをコードに追加。
+コードのスリム化を進めています。
+
 # 20201028
 
 McElieceがほぼ完成した。
