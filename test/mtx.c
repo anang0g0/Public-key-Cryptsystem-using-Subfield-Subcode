@@ -3,21 +3,19 @@
 
 //#define N 16
 //#define K 8
+
 //#include "global.h"
 //#include "chash.c"
 //#include "inv_mat.c"
 //#include "zech.c"
 
-typedef struct {
-  unsigned short x[N][N];
-  int row; //行
-  int col; //列
-} MTX;
+
+
 
 MTX mtx_new(int row, int col){
   MTX ret = {0};
-  ret.row = row;
-  ret.col = col;
+  ret.row = row; //行
+  ret.col = col; //列
   return ret;
 }
 
