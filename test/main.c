@@ -1,10 +1,11 @@
 #include "global.h"
 #include "struct.h"
+
 #include "debug.c"
 #include "zech.c"
 #include "util_mat.c"
 #include "util_poly.c"
-
+#include "mtx.c"
 
 //言わずもがな
 int
@@ -172,7 +173,8 @@ unsigned char inv_S[K][K]=
 label:
 
   //makeS();
-  //exit(1);
+  mtx_test2();
+  wait();
     
   do
     {
