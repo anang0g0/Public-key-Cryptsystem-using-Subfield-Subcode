@@ -312,8 +312,7 @@ unsigned short buf; //一時的なデータを蓄える
       }
     }
 
-    //aの逆行列をinv_cを経由してA.yに代入A.xにはaが入る
-    
+    //K次元正方行列aの逆行列をA.yに代入A.xにはaが入る
     A=invMAT(a,K);
     printf("mat A.x\n");
     pMAT(A,K,K,0);
