@@ -7,6 +7,19 @@
 #include "util_poly.c"
 #include "mtx.c"
 
+
+
+MTX MSM(MAT a,int k,int n){
+  MTX b;
+
+  b=mtx_new(k,n);
+  b=mtx_copy(a.x,k,n);
+
+  return b;
+}
+
+
+
 //言わずもがな
 int
 main (void)
@@ -173,6 +186,7 @@ unsigned char inv_S[K][K]=
 label:
 
   //makeS();
+  mtx_test();
   mtx_test2();
   wait();
     
@@ -254,12 +268,15 @@ lab:
 
   //makeS();
   //exit(1);
-
+  MTX Q;
       G=genSGP();
       printf("after SG\n");
       pMAT(G,K,N,0);
-      wait();      
-      
+      wait();
+      Q=MSM(G,K,N);
+      printf("test\n");
+      mtx_print("MTX=",Q);
+      wait();
       //置換の確認
       //memset(mat,0,sizeof(mat2));
       
