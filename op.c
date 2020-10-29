@@ -3619,7 +3619,7 @@ genSGP (void)
 
 
 MTX
-MSM (MAT a, int k, int n)
+M2X (MAT a, int k, int n)
 {
   MTX b;
 
@@ -3630,7 +3630,7 @@ MSM (MAT a, int k, int n)
 }
 
 MAT
-SMS (MTX a)
+X2M (MTX a)
 {
   MAT V;
 
@@ -3682,7 +3682,7 @@ main (void)
   MAT gen = { 0 },invP={0},invS={0};
   MAT mat2 = { 0 }, mat3 = { 0 };
   unsigned short q = 10, p;
-  MAT SGP={0},L={0};
+  MAT SGP={0},L={0},Q={0};
   MTX LL,MM;
 
   LL=mtx_new(K,N);
@@ -3802,36 +3802,37 @@ lab:
   printf ("before SG\n");
   wait ();
   G = genSGP ();
-  //memcpy(SGP.x,G.y,sizeof(SGP.x));
-  for(i=0;i<K;i++){
-    for(j=0;j<N;j++)
-      SGP.x[i][j]=G.y[j][i];
+  memcpy(SGP.x,G.y,sizeof(SGP.x));
+  /*
+  for(j=0;j<K;j++){
+    for(i=0;i<N;i++){
+      SGP.x[i][j]=G.y[i][j];
+    }
   }
-  
-  printf("SGP=");
-  pMAT(SGP,K,N,0);
-  //exit(1);
+  */
+  printf("SGP=\n");
+  pMAT(SGP,N,K,0);
+  //  exit(1);
   wait();
-  printf("G.y=");
+
+  printf("G.y=\n");
   pMAT(G,N,K,1);
   wait();
-  memcpy(L.x,SGP.x,sizeof(L.x));
+
+  L=n2k(SGP);
   printf("L=\n");
   pMAT(L,K,N,0);
   wait();
 
-  LL=MSM(L,K,N);
+  LL=M2X(L,K,N);
   printf("mtx_print=\n");
   mtx_print("LL=",LL);
   wait();
-    LL=d2b(LL);
+  LL=d2b(LL);
   mtx_print("d2b LL=",LL);
   MM=b2d(LL);
   mtx_print("b2d MM=",MM);
-    exit(1);
-  mtx_print("SGPb=",LL);
-  exit(1);
-  
+  wait();    
   printf ("after SG\n");
   pMAT (G, K, N, 0);
   wait ();
@@ -3839,7 +3840,7 @@ lab:
   printf("SGP\n");
   pMAT (SGP, N, K, 0);
   //wait ();
-  exit(1);
+  //exit(1);
   
   //置換の確認
   for (i = 0; i < K; i++)
