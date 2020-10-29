@@ -104,7 +104,7 @@ void pMAT(MAT A,int k,int n,int a){
   if(k>n){
     for(i=0;i<n;i++){
       for(j=0;j<k;j++)
-	printf("%d,",A.x[j][i]);
+	printf("%2d,",A.x[j][i]);
       printf("\n");
     }
     printf("\n");
@@ -112,7 +112,7 @@ void pMAT(MAT A,int k,int n,int a){
   if(n==k || k<n){
     for(i=0;i<k;i++){
       for(j=0;j<n;j++)
-	printf("%d,",A.x[i][j]);
+	printf("%2d,",A.x[i][j]);
       printf("\n");
     }
     printf("\n");
@@ -122,7 +122,7 @@ void pMAT(MAT A,int k,int n,int a){
     if(k>n){
       for(i=0;i<n;i++){
 	for(j=0;j<k;j++)
-	  printf("%d,",A.y[j][i]);
+	  printf("%2d,",A.y[j][i]);
 	printf("\n");
       }
       printf("\n");
@@ -130,7 +130,7 @@ void pMAT(MAT A,int k,int n,int a){
     if(n==k || k<n){
       for(i=0;i<k;i++){
 	for(j=0;j<n;j++)
-	  printf("%d,",A.y[i][j]);
+	  printf("%2d,",A.y[i][j]);
 	printf("\n");
       }
       printf("\n");
@@ -139,7 +139,17 @@ void pMAT(MAT A,int k,int n,int a){
 
 }
 
+MAT n2k(MAT Z){
+  MAT Q;
+  int i,j;
 
+  for(i=0;i<K;i++){
+    for(j=0;j<N;j++)
+      Q.x[i][j]=Z.x[j][i];
+  }
+
+  return Q;
+}
 
 MAT N2K(unsigned short A[N][K]){
   MAT B={0};
@@ -158,6 +168,27 @@ MAT N2K(unsigned short A[N][K]){
 }
 
 
+MAT Y2X(MAT Q,int k,int n){
+  int i,j;
+  MAT SGP={0};
+
+  if(k>n){
+    for(j=0;j<n;j++){
+      for(i=0;i<k;i++){
+	SGP.x[i][j]=Q.y[i][j];
+      }
+    }
+  }
+  if(k<=n){
+    for(i=0;i<k;i++){
+      for(j=0;j<n;j++)
+	SGP.x[i][j]=Q.y[i][j];
+    } 
+  }
+
+  
+  return SGP;
+}
 //
 MAT K2N(unsigned short A[K][N]){
   int i,j;
