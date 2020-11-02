@@ -3718,9 +3718,9 @@ label:
       j=0;
       k = 0;
       flg = 0;
-      //memset (g, 0, sizeof (g));
+      memset (g, 0, sizeof (g));
       memset (ta, 0, sizeof (ta));
-      //ginit ();
+      ginit ();
 
       for (i = 0; i < K + 1; i++)
         {
