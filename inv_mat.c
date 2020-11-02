@@ -10,7 +10,7 @@
 
 #define MAXN 4
 #define N 16 //order of GF(q)
-#define F 8  //dimension of matrix
+#define F K  //dimension of matrix
 
 
 unsigned short mat[N][K]={0};
@@ -272,14 +272,16 @@ unsigned short buf; //一時的なデータを蓄える
  
  //転置
     code= N2K(mat);
-    
+    printf("code=\n");
+    pMAT(code,K,N,0);
+    wait();
     //codeの後半部分をaにコピー
     for(i=0;i<F;i++){
       for(j=0;j<F;j++){
-	a.x[i][j]=code.x[i][K+j]; //rand()%N;
+	a.x[i][j]=code.x[i][N-K+j]; //rand()%N;
 	printf("a%d,",a.x[i][j]);
       }
-      //printf("\n");
+      printf("\n");
     }
      wait();
     
@@ -391,25 +393,33 @@ printf("行列を出力\n ={\n");
    }
    //
  }
- memcpy(GG.x,code.x,sizeof(code.x));
+ //memcpy(GG.x,code.x,sizeof(code.x));
+ //
+ //printf("\n");
+ pMAT(c2,K,N-K,0);
  wait();
- printf("\n");
- pMAT(c2,K,N,0);
-
- for(i=0;i<K;i++){
-   for(j=0;j<K;j++)
-     GG.x[i][j]=c2.x[j][K+i];
- }
- for(i=0;i<K;i++){
-   for(j=0;j<K;j++)
-     GG.x[i][j+K]=c2.x[j][i];
- }
-
- printf("生成行列GG.x!\n");
- pMAT(GG,K,N,0);
  
+ for(i=0;i<N-K;i++){
+   GG.x[i][i]=1;
+ }
+
+ for(i=0;i<K;i++){
+   for(j=0;j<N-K;j++)
+     GG.x[i+N-K][j]=c2.x[i][j];
+ }
+ printf("生成行列GG.x!\n");
+ pMAT(GG,N,N-K,0);
  wait();
 
+ 
+ MAT tmp={0};
+ for(i=0;i<N;i++){
+   for(j=0;j<N-K;j++)
+     tmp.x[j][i]=GG.x[i][j];
+ }
+ pMAT(tmp,N-K,N,0); 
+ wait();
+ 
  unsigned short ss[N]={0};
  unsigned short s[K]={0};
  /* 
@@ -418,14 +428,15 @@ printf("行列を出力\n ={\n");
  }
  */
  for(i=0;i<N;i++)
-   ss[i]=GG.x[0][i]^GG.x[1][i]^GG.x[2][i]^GG.x[3][i];
-  for(i=0;i<4;i++)
+   ss[i]=tmp.x[0][i]^GG.x[1][i]^GG.x[2][i]^GG.x[3][i];
+  for(i=0;i<3;i++)
     ss[i]^=1;
 
- pMAT(code,K,N,0);
- wait();
-
- 
+  for(i=0;i<N;i++)
+    printf("%d,",ss[i]);
+  printf("\n");
+  //exit(1);
+  
  for(i=0;i<K;i++){
    for(j=0;j<N;j++)
      s[i]^=gf[mlt(fg[ss[j]],fg[code.x[i][j]])];
@@ -439,10 +450,10 @@ printf("行列を出力\n ={\n");
  for(i=0;i<K;i++)
    printf("%d,",s[i]);
  printf("\n");
- // exit(1);
+ //exit(1);
  
  
- return GG;
+ return tmp;
 }
 
 //Q-matrix(置換行列を返す)
