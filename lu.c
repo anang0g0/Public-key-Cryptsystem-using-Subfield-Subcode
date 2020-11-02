@@ -6,7 +6,7 @@
 #include <time.h>
 
 //#define D 4096
-#define F 8 //2040
+#define F 10 //2040
 
 unsigned char a[F][F]={0};
 unsigned char cc[F][F]={0};
