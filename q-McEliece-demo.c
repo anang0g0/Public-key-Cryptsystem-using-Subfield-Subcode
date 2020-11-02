@@ -44,7 +44,7 @@
 #include "inv_mat.c"
 //#include "golay.c"
 
-#define K 8
+//#define K 8
 
 extern unsigned long xor128 (void);
 extern int mlt (int x, int y);
@@ -3796,7 +3796,7 @@ lab:
       for(i=0;i<K;i++){
 	for(j=0;j<N;j++){
 	  printf("%2d,",G.y[j][i]);
-	  
+	  //mat[j][i]=G.y[j][i];
 	}
 	printf("\n");
       }

@@ -9,7 +9,7 @@
 
 
 #define MAXN 4
-#define N 16 //order of GF(q)
+//#define N 16 //order of GF(q)
 #define F K  //dimension of matrix
 
 
