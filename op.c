@@ -49,7 +49,7 @@
 #include "mtx.c"
 //#include "golay.c"
 
-#define K 8
+//#define K 8
 
 extern unsigned long xor128 (void);
 extern int mlt (int x, int y);
@@ -63,7 +63,14 @@ extern MAT makeS ();
 unsigned short sy[K] = { 0 };
 
 //Goppa多項式
-static unsigned short g[K + 1] = { 1, 0, 0, 1, 14, 15, 6, 0, 15 };
+static unsigned short g[K + 1] = {0};
+  //{1,0,0,0,1,0,1};
+  //{1,2,9,7,1,13,15};
+  //
+
+  //irr deg=6 
+  //
+//{ 1, 0, 0, 1, 14, 15, 6, 0, 15 };
 
   //{ 0 };
   //{1,0,0,5,0,0,12,10,14};
@@ -3520,19 +3527,25 @@ genSGP (void)
 
 
   //  memcpy(mat,mat2,sizeof(mat));
-  printf ("matinv\n");
+
   G = matinv ();
-  pMAT (G, K, N, 0);
+  printf ("matinv\n");
+  pMAT (G, N-K, N, 0);
   wait ();
 
 
 
-  //SS=makeS();
-  //PP=matmul();
+  SS=makeS();
+  PP=matmul();
 
-  G2 = K2N (G.x);
+  //G2 = K2N (G.x);
+  for(i=0;i<N-K;i++){
+    for(j=0;j<N;j++)
+      G2.x[j][i]=G.x[i][j];
+  }
+
   printf ("after K2N\n");
-  for (i = 0; i < K; i++)
+  for (i = 0; i < N-K; i++)
     {
       for (j = 0; j < N; j++)
 	printf ("%d,", G2.x[j][i]);
@@ -3545,14 +3558,14 @@ genSGP (void)
 
   //置換行列をかける時
   printf ("out of perm\n");
-  for (i = 0; i < K; i++)
+  for (i = 0; i < N-K; i++)
     {
       for (j = 0; j < M; j++)
 	{
 	  for (k = 0; k < M; k++)	//gen
 	    mat2.x[j][i] ^= gf[mlt (fg[G2.x[k][i]], fg[PP.x[k][j]])];
 	  //G.y[j][i]=mat2[j][i];
-	  printf ("%2d,", mat[j][i]);
+	  printf ("%2d,", mat2.x[j][i]);
 
 	}
       printf ("\n");
@@ -3561,11 +3574,11 @@ genSGP (void)
 
   //スクランブル行列をかける時
   printf ("out of S\n");
-  for (i = 0; i < K; i++)
+  for (i = 0; i < N-K; i++)
     {
       for (j = 0; j < D; j++)
 	{
-	  for (k = 0; k < K; k++)
+	  for (k = 0; k < N-K; k++)
 	    {
 	      gen.x[j][i] ^= gf[mlt (fg[SS.x[i][k]], fg[mat2.x[j][k]])];
 	    }
@@ -3603,7 +3616,7 @@ genSGP (void)
      //exit(1);
    */
   printf ("mat\n");
-  for (i = 0; i < K; i++)
+  for (i = 0; i < N-K; i++)
     {
       for (j = 0; j < N; j++)
 	{
@@ -3736,8 +3749,8 @@ main (void)
 
 label:
 
-  SS = makeS ();
-  PP = matmul ();
+  //SS = makeS ();
+  //PP = matmul ();
   //exit(1);
   memcpy(invP.x,PP.y,sizeof(invP.x));
   memcpy(invS.x,SS.y,sizeof(invS.x));
@@ -3748,9 +3761,9 @@ label:
       j = 0;
       k = 0;
       flg = 0;
-      //memset (g, 0, sizeof (g));
+      memset (g, 0, sizeof (g));
       memset (ta, 0, sizeof (ta));
-      //ginit ();
+      ginit ();
 
       for (i = 0; i < K + 1; i++)
 	{
@@ -3765,8 +3778,8 @@ label:
 	  j = 1;
 	}
 
-      //w = setpol (g, K + 1);
-      //oprintpol (w);
+      w = setpol (g, K + 1);
+      oprintpol (w);
 
       //多項式の値が0でないことを確認
       for (i = 0; i < D; i++)
@@ -3781,7 +3794,7 @@ label:
 	}
 
     }
-  while (fail || j == 0);
+  while (fail);
 
   oprintpol (w);
   printf ("\n");
@@ -3834,17 +3847,21 @@ lab:
   }
   */
   printf("SGP=\n");
-  pMAT(SGP,N,K,0);
+  pMAT(SGP,N,N-K,0);
   //  exit(1);
   wait();
 
   printf("G.y=\n");
-  pMAT(G,N,K,1);
+  pMAT(G,N,N-K,1);
   wait();
 
   L=n2k(SGP);
+  for(i=0;i<N-K;i++){
+    for(j=0;j<N;j++)
+      L.x[i][j]=SGP.x[j][i];;
+  }
   printf("L=\n");
-  pMAT(L,K,N,0);
+  pMAT(L,N-K,N,0);
   wait();
 
   LL=M2X(L,U,N);
@@ -3861,16 +3878,16 @@ lab:
   mtx_print("b2d MM=",MM);
   wait();    
   printf ("after SG\n");
-  pMAT (G, K, N, 0);
+  pMAT (G, N-K, N, 0);
   wait ();
   
   printf("SGP\n");
-  pMAT (SGP, N, K, 0);
+  pMAT (SGP, N, N-K, 0);
   //wait ();
   //exit(1);
   
   //置換の確認
-  for (i = 0; i < K; i++)
+  for (i = 0; i < N-K; i++)
     {
       for (j = 0; j < N; j++)
 	{
@@ -3879,35 +3896,35 @@ lab:
 	}
     }
   printf ("after invP\n");
-  pMAT (gen, N, K, 0);
+  pMAT (gen, N, N-K, 0);
   wait ();
 
   for (j = 0; j < N; j++)
     {
-      for (i = 0; i < K; i++)
+      for (i = 0; i < N-K; i++)
 	{
-	  for (k = 0; k < K; k++)
+	  for (k = 0; k < N-K; k++)
 	    mat3.x[j][i] ^= gf[mlt (fg[SS.y[i][k]], fg[gen.x[j][k]])];
 	}
     }
   printf ("after inv_S\n");
-  pMAT (mat3, N, K, 0);
+  pMAT (mat3, N, N-K, 0);
   wait ();
 
   printf ("decode of G\n");
-  pMAT (gen, N, K, 0);
+  pMAT (gen, N, N-K, 0);
   //exit(1);
 
 
   printf ("original\n");
-  pMAT (G, K, N, 0);
+  pMAT (G, N-K, N, 0);
   //exit(1);
 
 
 
 
   printf ("gen2mat\n");
-  for (i = 0; i < 8; i++)
+  for (i = 0; i < K; i++)
     {
       for (j = 0; j < M; j++)
 	printf ("%2d,", mat[j][i]);
@@ -3934,10 +3951,13 @@ lab:
 
       memset (zz, 0, sizeof (zz));
 
-      //for(i=0;i<4;i++)
-      //zz[i]=i+1;
+      //for(i=0;i<3;i++)
+      zz[0]=1;
+      zz[1]=2;
+      zz[2]=4;
+      zz[3]=8;
 
-
+      /*
       j = 0;
       k = 0;
       while (j < T)
@@ -3954,7 +3974,7 @@ lab:
 		}
 	    }
 	}
-
+      */
       for (i = 0; i < N; i++)
 	printf ("zz=%d %d\n", i, zz[i]);
       wait ();
@@ -4036,6 +4056,7 @@ lab:
 
       r = decode (w, f);
 
+      printf("\n");
       for (i = 0; i < N; i++)
 	printf ("%d,", zz[i]);
       printf ("\n");
@@ -4043,8 +4064,8 @@ lab:
       for (i = 0; i < T; i++)
 	{
 	  if (i == 0)
-	    printf ("i==0 %d\n", r.t[i].a);
-
+	    printf ("\ni==0 %d\n", r.t[i].a);
+	  
 	  if (r.t[i].a > 0 && count > 0)	// == r.t[i].n)
 	    {
 	      printf ("e=%d %d %d %s\n", i, r.t[i].a, r.t[i].n, "お");
@@ -4057,6 +4078,12 @@ lab:
 	    }
 
 	}
+
+      for(i=0;i<N;i++){
+	if(r.t[i].a>0)
+	ef.x[r.t[i].n]^=r.t[i].a;
+      }
+      
       if (count != T)
 	{
 	  printf ("error pattarn too few %d\n", count);
@@ -4082,35 +4109,47 @@ lab:
 	  printf ("%d baka1\n", count);
 	  exit (1);
 	}
+      
 
-
-      ef = o2v (r);
+      for(i=0;i<N;i++)
+	printf("%d,",ef.x[i]);
+      printf("\n");
+      //exit(1);
+      
+      for(i=0;i<N;i++){
+	for(j=0;j<N;j++)
+	  gh.x[i]^=gf[mlt(fg[ef.x[j]],PP.x[j][i])];
+      }
       for (i = 0; i < N; i++)
 	{
-	  printf ("e=%d\n", ef.x[i]);
+	  printf ("e=%d\n", gh.x[i]);
 	  //code2[i]^=ef.x[i];
 	}
       printf ("\n\n");
+      //exit(1);
+      
       printf ("code2\n");
       for (i = 0; i < N; i++)
 	printf ("%d,", code2[i]);
       printf ("\n");
 
-      unsigned short tt[K] = { 0 }, t3[K] = { 0 };
-      for (i = 0; i < K; i++)
-	tt[i] = code2[i] ^ ef.x[i];
+      pMAT(SS,N-K,N-K,1);
+      //exit(1);
+      
+      unsigned short tt[N-K] = { 0 }, t3[N-K] = { 0 };
+      for (i = 0; i < M; i++)
+	tt[i] = code2[i] ^ gh.x[i];
       printf ("m=");
-      for (i = 0; i < K; i++)
+      for (i = 0; i < N-K; i++)
 	{
-	  for (j = 0; j < K; j++)
-	    t3[i] ^= gf[mlt (fg[tt[j]], fg[SS.y[j][i]])];
+	  for (j = 0; j < N-K; j++)
+	    t3[i] ^= gf[mlt (fg[tt[j]], fg[SS.x[j][i]])];
 	  printf ("%d", t3[i]);
 	}
       printf ("\n");
-      //exit(1);
+      exit(1);
       wait ();
 
-      //exit(1);
       //goto label;
 
 
