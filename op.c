@@ -3907,7 +3907,7 @@ lab:
 
 
   printf ("gen2mat\n");
-  for (i = 0; i < 8; i++)
+  for (i = 0; i < K; i++)
     {
       for (j = 0; j < M; j++)
 	printf ("%2d,", mat[j][i]);
