@@ -49,7 +49,7 @@
 #include "mtx.c"
 //#include "golay.c"
 
-#define K 8
+//#define K 8
 
 extern unsigned long xor128 (void);
 extern int mlt (int x, int y);
