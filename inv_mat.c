@@ -36,7 +36,7 @@ wait (void)
 }
 
 
- void rp(unsigned char* a) {
+ void rp(unsigned short* a) {
         int i, j, x;
         time_t t;
 
@@ -459,9 +459,9 @@ printf("行列を出力\n ={\n");
 //Q-matrix(置換行列を返す)
 MAT matmul(){
   int i,j,k,tmp[N][N]={0};
-unsigned char x0[N];//={1,2,3,4,5,6,7,0};
-unsigned char x1[N];//={2,3,1,6,5,7,0,4};
-unsigned char x2[N]={0};
+unsigned short x0[N];//={1,2,3,4,5,6,7,0};
+unsigned short x1[N];//={2,3,1,6,5,7,0,4};
+unsigned short x2[N]={0};
 unsigned short c[N][N]={0};
 
 unsigned short a[N][N]={0};//{{0,3,0,0,},{0,0,4,0},{0,0,0,5},{6,0,0,0}};

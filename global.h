@@ -8,14 +8,14 @@
 //符号のパラーメータの指定。通常[N,K,T]として、
 //Nは符号の長さ、Kが符号の次元、Tは訂正エラー数
 //を表す。ここではDは符号長にしている。
-#define N 256 // (^^;)?
-#define M 256 //有限体の元の数
-#define K (128) //符号の次元
+#define N 512 // (^^;)?
+#define M 512 //有限体の元の数
+#define K (256) //符号の次元
 #define DEG (K*2)
 #define T (K/2) //エラーの数
 #define U K
-#define E (8) //拡大体のビット数
-#define D (256) //符号長（短縮符号）
+#define E (9) //拡大体のビット数
+#define D (512) //符号長（短縮符号）
 #define F  E*K //2040
 
 

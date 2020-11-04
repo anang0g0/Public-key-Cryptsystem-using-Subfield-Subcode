@@ -75,7 +75,7 @@ static unsigned short g[K + 1] ={0};
 unsigned short zz[N] = { 0 };
 
 unsigned int AA = 0, B = 0, C = 0;
-MTX H;				//public key [n,k,t]=[8192,3328,256]
+MTX H;  //public key [n,k,t]=[8192,3328,256]
 
 
 typedef struct
@@ -261,6 +261,65 @@ norm (OP f)
   return h;
 }
 
+
+//20200816:正規化したいところだがうまく行かない
+//多項式の足し算
+OP
+oadd (OP f, OP g)
+{
+  vec a = { 0 }
+  , b =
+  {
+  0}
+  , c =
+  {
+  0};
+  int i, j, k, l = 0;
+  OP h = { 0 },f2={0},g2={0};
+
+  //for(i=0;i<257;i++)
+  // printf("%d %d %d %d %d\n",i,f.t[i].a,f.t[i].n,g.t[i].a,g.t[i].n);
+
+   //  exit(1);
+  //f=conv(f);
+  //g=conv(g);
+
+  a = o2v (f);
+  //exit(1);
+  b = o2v (g);
+
+  j=odeg(f);
+  l=odeg(g);
+  //  oprintpol((g));
+  //  exit(1);
+  if (j >= l)
+    {
+      k = j + 1;
+    }
+  else
+    {
+
+      k = l + 1;
+
+    }
+  //for(i=0;i<k;i++)
+  //printf("%d %d\n",i,b.x[i]);
+  //  exit(1);
+  
+  for (i = 0; i < k; i++)
+    {
+      //if(f.t[i].a>0 || g.t[i].a>0)
+      //h.t[i].a=f.t[i].a^g.t[i].a;
+      c.x[i] = a.x[i] ^ b.x[i];
+    }
+  // 
+  h = v2o (c);
+
+  return h;
+}
+
+
+/*
 //20200816:正規化したいところだがうまく行かない
 //多項式の足し算
 OP
@@ -302,6 +361,7 @@ oadd (OP f, OP g)
   assert (op_verify (h));
   return h;
 }
+*/
 
 
 //項の順序を降順に揃える
@@ -458,6 +518,33 @@ add (OP f, OP g)
 OP
 oterml (OP f, oterm t)
 {
+
+  //assert (op_verify (f));
+  int i, k,j;
+  OP h = { 0 };
+  vec test;
+  unsigned short n;
+
+  //f=conv(f);
+  k = odeg (f);
+  j=0;
+  for (i = 0; i < k + 1; i++)
+    {
+      h.t[i].n = f.t[i].n + t.n;
+      h.t[i].a = gf[mlt (fg[f.t[i].a], fg[t.a])];
+    }
+  
+  //h=conv(h);
+  //assert (op_verify (h));
+  return h;
+}
+
+
+/*
+//多項式を項ずつ掛ける
+OP
+oterml (OP f, oterm t)
+{
   f = conv (f);
   assert (op_verify (f));
   int i, k, j;
@@ -478,8 +565,50 @@ oterml (OP f, oterm t)
   assert (op_verify (h));
   return h;
 }
+*/
 
 
+//多項式の掛け算
+OP
+omul (OP f, OP g)
+{
+  //f=conv(f);
+  //g=conv(g);
+
+  //assert (op_verify (f));
+  //assert (op_verify (g));
+  int i, count = 0, k,l,m;
+  oterm t = { 0 };
+  OP h = { 0 }, e = {
+    0
+  }, r = {
+    0
+  };
+  vec c = { 0 };
+  l=odeg(f);
+  m=odeg(g);
+  
+  if (l >= m)
+    {
+      k = l;
+    }
+  else
+    {
+      k = m;
+    }
+
+  for (i = 0; i < k + 1; i++)
+    {
+      t = g.t[i];
+      e = oterml (f, t);
+      h = oadd (h, e);
+    }
+  //assert (op_verify (h));
+  return h;
+}
+
+
+/*
 //多項式の掛け算
 OP
 omul (OP f, OP g)
@@ -515,6 +644,7 @@ omul (OP f, OP g)
   assert (op_verify (h));
   return h;
 }
+*/
 
 
 //リーディグタームを抽出(default)
@@ -1766,8 +1896,6 @@ ipow (unsigned int q, unsigned int u)
   return m;
 }
 
-
-
 //多項式の形式的微分
 OP
 bibun (vec a)
@@ -1776,7 +1904,7 @@ bibun (vec a)
   OP l = { 0 }
   , t = {
     0
-  };
+  },d={0};
   int i, j, n, id;
   vec tmp = { 0 };
 
@@ -1803,21 +1931,26 @@ bibun (vec a)
 
   tmp.x[0] = 1;
   //
-
-  //#pragma omp parallel for private(i,j)
+  d=v2o(tmp);
+  //#pragma omp parallel for //private(i,j)
   for (i = 0; i < T; i++)
     {
-      t = v2o (tmp);
+      printf("i=%d\n",i);
+      t = d;//v2o (tmp);
+      //t.t[0].n=0;
+      //t.t[0].a=1;
       //
+      //#pragma omp parallel for //private(i,j)
       for (j = 0; j < T; j++)
 	{
+	  //printf("j=%d\n",j);
 	  // #pragma omp critical
 	  if (i != j)
 	    {
 	      t = omul (t, w[j]);
 	    }
 	}
-
+    
       //printpol(o2v(t));
       //
       if (deg (o2v (t)) == 0)
@@ -1831,6 +1964,7 @@ bibun (vec a)
 
   return l;
 }
+
 
 
 //chen探索
@@ -1848,7 +1982,7 @@ chen (OP f)
   for (x = 0; x < N; x++)
     {
       z = 0;
-#pragma omp parallel for reduction (^:z)
+      //#pragma omp parallel for reduction (^:z)
       for (i = 0; i < n + 1; i++)
 	{
 	  if (f.t[i].a > 0)
@@ -3696,17 +3830,15 @@ main (void)
   };
   int fail = 0;
 
-  MAT G = { 0 }, GG = { 0 };
+  static MAT G = { 0 }, GG = { 0 };
 
-// MAT ef={0},ji={0};
-// MAT pp={0};
 
   //N,K
-  MAT gen = { 0 },invP={0},invS={0};
-  MAT mat2 = { 0 }, mat3 = { 0 };
+  static MAT gen = { 0 },invP={0},invS={0};
+  static MAT mat2 = { 0 }, mat3 = { 0 };
   unsigned short q = 10, p;
-  MAT SGP={0},L={0},Q={0};
-  MTX LL,MM;
+  static MAT SGP={0},L={0},Q={0};
+  static MTX LL,MM;
 
   LL=mtx_new(U,N);
   MM=mtx_new(U,N);
@@ -3974,7 +4106,7 @@ lab:
       for (i = 0; i < D; i++)
 	{
 	  if (code2[i] > 0)
-	    printf ("l=%d %d\n", i, code2[i]);
+	    printf ("ll=%d %d\n", i, code2[i]);
 	}
       wait ();
       //exit(1);
