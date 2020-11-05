@@ -4222,6 +4222,8 @@ lab:
 	      printf ("%d,", e[i]);
 	    }
 	  printf ("\n");
+	  printpol(o2v(w));
+	  printf(" ==========goppa\n");
 	  exit (1);
 	}
 
