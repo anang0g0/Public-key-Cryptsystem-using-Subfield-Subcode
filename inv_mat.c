@@ -185,16 +185,17 @@ unsigned short cc[N][N]={0};
 
 
 
+
 //正方行列の逆行列
 MAT invMAT(MAT a,int n){
   int i,j,k;
-  MAT invM={0};
+  MAT invM={0},dd={0};
   unsigned short buf; //一時的なデータを蓄える
   MAT inv_a={0};
   //n=F;
   unsigned short b[N][N]={0};
   printf("a's copy\n");
-  memcpy(invM.x,a.x,sizeof(invM));
+  memcpy(invM.x,a.x,sizeof(invM.x));
   pMAT(invM,n,n,0);
   wait();
   
@@ -204,26 +205,76 @@ for(i=0;i<n;i++){
  inv_a.x[i][j]=(i==j)?1:0;
  }
 }
+ int ii,jj;
  printf("inv_a's 単位行列\n");
  pMAT(inv_a,n,n,0);
  wait();
 //掃き出し法
-for(i=0;i<n;i++){
-  buf=gf[Inv(fg[a.x[i][i]])];
- for(j=0;j<n;j++){
-   a.x[i][j]=gf[mlt(fg[buf],fg[a.x[i][j]])];
-   inv_a.x[i][j]=gf[mlt(fg[buf],fg[inv_a.x[i][j]])];
-}
-for(j=0;j<n;j++){
- if(i!=j){
-  buf=a.x[j][i];
-  for(k=0;k<n;k++){
-    a.x[j][k]^=gf[mlt(fg[a.x[i][k]],fg[buf])];
-    inv_a.x[j][k]^=gf[mlt(fg[inv_a.x[i][k]],fg[buf])];
+
+ for(i=0;i<n;i++){
+  if(a.x[i][i]==0){
+    
+    for(ii=0;ii<K;ii++)
+    dd.x[0][ii]=a.x[i][ii];
+    for(ii=0;ii<K;ii++)
+      a.x[i][ii]=a.x[i+1][ii];
+    for(ii=0;ii<K;ii++)
+      a.x[i+1][ii]=dd.x[0][ii];
+    for(ii=0;ii<K;ii++)
+      dd.x[1][ii]=inv_a.x[i][ii];
+    for(ii=0;ii<K;ii++)
+      inv_a.x[i][ii]=inv_a.x[i+1][ii];
+    for(ii=0;ii<K;ii++)
+      inv_a.x[i+1][ii]=dd.x[1][ii];
+    
+    printf("だめぇ〜！\n");
+    //exit(1);
+    wait();
+    //a.o = -1;
+    //return a;
   }
+  
+  buf=gf[Inv(fg[a.x[i][i]])];
+  for(j=0;j<n;j++){
+    a.x[i][j]=gf[mlt(fg[buf],fg[a.x[i][j]])];
+    inv_a.x[i][j]=gf[mlt(fg[buf],fg[inv_a.x[i][j]])];
+  }
+  pMAT(a,n,n,0); 
+  //exit(1);
+  /*
+  for(j=i;j<n;j++){
+    a.x[i][j]^=gf[mlt(fg[buf],fg[a.x[i][j]])];
+    inv_a.x[i][j]^=gf[mlt(fg[buf],fg[inv_a.x[i][j]])];
+  }
+  pMAT(a,n,n,0);
+  exit(1);
+  */
+
+ for(j=0;j<n;j++){
+   if(i!=j){
+     buf=a.x[j][i];
+     for(k=0;k<n;k++){
+       a.x[j][k]^=gf[mlt(fg[a.x[i][k]],fg[buf])];
+   inv_a.x[j][k]^=gf[mlt(fg[inv_a.x[i][k]],fg[buf])];
+     }
+   }
  }
+ pMAT(a,n,n,0);
  }
+ //exit(1);
+ 
+ /*
+ for(j=i;j<n;j++){
+   if(i!=j){
+     buf=a.x[j][i];
+     for(k=i;k<n;k++){
+       a.x[j][k]^=gf[mlt(fg[a.x[i][k]],fg[buf])];
+       inv_a.x[j][k]^=gf[mlt(fg[inv_a.x[i][k]],fg[buf])];
+     }
+   }
  }
+ */
+
  
  for(i=0;i<n;i++){
    for(j=0;j<n;j++)
@@ -296,6 +347,8 @@ unsigned short buf; //一時的なデータを蓄える
 
     //K次元正方行列aの逆行列をA.yに代入A.xにはaが入る
     A=invMAT(a,K);
+    if(A.o== -1)
+      return A;
     printf("mat A.x\n");
     pMAT(A,K,K,0);
     printf("mat A.y\n");
@@ -487,33 +540,42 @@ unsigned short inv_a[N][N]={0};
   }
   
   printf("Q1-置換行列を表示\n ={\n");
+  #pragma omp parallel for
   for(i=0;i<N;i++){
-    printf("{");
+    //printf("{");
     for(j=0;j<N;j++){
-      printf("%3d,",a[j][i]);
+      // printf("%3d,",a[j][i]);
       P.x[j][i]=a[j][i];
     }
-    printf("},\n");
+    //printf("},\n");
   }
   printf("};\n");
 
   printf("逆置換行列\n ={");
+  #pragma omp parallel for
   for(i=0;i<N;i++){
-    printf("{");
+    //printf("{");
     for(j=0;j<N;j++){
-	printf("%3d,",inv_a[j][i]);
+      //printf("%3d,",inv_a[j][i]);
 	P.y[j][i]=inv_a[j][i];
     }
-    printf("},\n");
+    //printf("},\n");
   }
+  printf("謎\n");
+#pragma omp parallel for
   for(i=0;i<N;i++){
+    printf("粕");
+#pragma omp parallel for
     for(j=0;j<N;j++){
+      #pragma omp parallel for
       for(k=0;k<N;k++){
 	tmp[i][j]^=gf[mlt(fg[a[i][k]],fg[inv_a[k][j]])];
       }
     }
   }
   printf("};\n");
+  /*
+#pragma omp parallel for
   for(i=0;i<N;i++){
     for(j=0;j<N;j++){
       printf("%d,",tmp[j][i]);
@@ -521,7 +583,9 @@ unsigned short inv_a[N][N]={0};
     }
     printf("\n");
   }
+  */
 
+  
   return P;
 }
 
