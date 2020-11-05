@@ -217,31 +217,44 @@ for(i=0;i<n;i++){
     printf("だめぇ〜！\n");
     //exit(1);
     wait();
-
+    
+    int tmp=0,row=0;
+    tmp=a.x[i][i];
+    for(ii=i;ii<K;ii++){
+      if(a.x[ii][i]>tmp){
+	tmp=a.x[ii][i];
+	row=ii;
+      }
+    }
+    printf("max=%d\n",row);
+    //exit(1);
+    wait();
     while(a.x[k][i]==0){
       k++;
       if(k>n){
 	printf("この兄ちゃん飼っちゃおうぜ\n");
+	//wait();
+
 	//a.o = -1;
 	//return a;
 	exit(1);
       }
-    }
+    } 
     for(ii=0;ii<K;ii++)
     dd.x[0][ii]=a.x[i][ii];
     for(ii=0;ii<K;ii++)
-      a.x[i][ii]=a.x[k][ii];
+      a.x[i][ii]=a.x[row][ii];
     for(ii=0;ii<K;ii++)
-      a.x[k][ii]=dd.x[0][ii];
+      a.x[row][ii]=dd.x[0][ii];
     for(ii=0;ii<K;ii++)
       dd.x[1][ii]=inv_a.x[i][ii];
     for(ii=0;ii<K;ii++)
-      inv_a.x[i][ii]=inv_a.x[k][ii];
+      inv_a.x[i][ii]=inv_a.x[row][ii];
     for(ii=0;ii<K;ii++)
-      inv_a.x[k][ii]=dd.x[1][ii];
+      inv_a.x[row][ii]=dd.x[1][ii];
     
   }
-  
+ 
   buf=gf[Inv(fg[a.x[i][i]])];
   for(j=0;j<n;j++){
     a.x[i][j]=gf[mlt(fg[buf],fg[a.x[i][j]])];
