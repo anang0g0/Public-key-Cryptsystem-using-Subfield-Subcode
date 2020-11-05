@@ -40,7 +40,7 @@
 #include "chash.c"
 
 
-//#include "8192.h"
+//
 
 
 #include "lu.c"
@@ -3657,6 +3657,8 @@ genSGP (void)
   //  memcpy(mat,mat2,sizeof(mat));
   printf ("matinv\n");
   G = matinv ();
+  if(G.o == -1)
+    return G;
   pMAT (G, K, N, 0);
   wait ();
 
@@ -3869,6 +3871,7 @@ main (void)
 label:
 
   SS = makeS ();
+  //exit(1);
   PP = matmul ();
   //exit(1);
   memcpy(invP.x,PP.y,sizeof(invP.x));
@@ -3957,7 +3960,11 @@ lab:
   printf ("before SG\n");
   wait ();
   G = genSGP ();
+  if(G.o== -1)
+    goto label;
+  
   memcpy(SGP.x,G.y,sizeof(SGP.x));
+  //exit(1);
   /*
   for(j=0;j<K;j++){
     for(i=0;i<N;i++){
@@ -3997,15 +4004,20 @@ lab:
   wait ();
   
   printf("SGP\n");
-  pMAT (SGP, N, K, 0);
+  //pMAT (SGP, N, K, 0);
   //wait ();
   //exit(1);
-  
+
+  /*
   //置換の確認
+#pragma omp parallel for
   for (i = 0; i < K; i++)
     {
+      printf("屑");
+#pragma omp parallel for
       for (j = 0; j < N; j++)
 	{
+#pragma omp parallel for
 	  for (k = 0; k < N; k++)
 	    gen.x[j][i] ^= gf[mlt (fg[G.y[k][i]], fg[PP.y[k][j]])];
 	}
@@ -4013,11 +4025,16 @@ lab:
   printf ("after invP\n");
   pMAT (gen, N, K, 0);
   wait ();
-
+  //exit(1);
+  
+#pragma omp parallel for
   for (j = 0; j < N; j++)
     {
+      printf("糞");
+      #pragma omp parallel for
       for (i = 0; i < K; i++)
 	{
+	  #pragma omp parallel for
 	  for (k = 0; k < K; k++)
 	    mat3.x[j][i] ^= gf[mlt (fg[SS.y[i][k]], fg[gen.x[j][k]])];
 	}
@@ -4034,10 +4051,10 @@ lab:
   printf ("original\n");
   pMAT (G, K, N, 0);
   //exit(1);
+  */
 
 
-
-
+  /*
   printf ("gen2mat\n");
   for (i = 0; i < K; i++)
     {
@@ -4046,7 +4063,7 @@ lab:
       printf ("\n");
     }
   //exit(1);
-
+  */
 
 
 
@@ -4078,10 +4095,10 @@ lab:
 	  //printf("l=%d\n",l);
 	  if (0 == zz[l])
 	    {
-	      k = rand () % M;
-	      if (k > 0)
+	      //k = rand () % M;
+	      if (l > 0)
 		{
-		  zz[l] = k;
+		  zz[l] = l;
 		  j++;
 		}
 	    }
@@ -4097,12 +4114,13 @@ lab:
 	code[i] ^= zz[i];
       unsigned short z3[N] = { 0 };
       memcpy (z3, zz, sizeof (z3));
+#pragma omp parallel for
       for (i = 0; i < N; i++)
 	{
 	  for (j = 0; j < N; j++)
 	    code2[i] ^= gf[mlt (fg[code[j]], fg[PP.y[j][i]])];
 	}
-
+      /*
       for (i = 0; i < D; i++)
 	{
 	  if (code2[i] > 0)
@@ -4110,7 +4128,7 @@ lab:
 	}
       wait ();
       //exit(1);
-
+      
       printf ("code0\n");
       for (i = 0; i < N; i++)
 	printf ("%d,", G.y[i][0]);
@@ -4124,7 +4142,7 @@ lab:
 	printf ("%d,", code2[i]);
       printf ("\n");
       //  exit(1);
-
+      */
       wait ();
 
 
@@ -4165,12 +4183,12 @@ lab:
       printf (" ==========synd\n");
 
       //exit(1);
-
+      
       r = decode (w, f);
 
       for (i = 0; i < N; i++)
-	printf ("%d,", zz[i]);
-      printf ("\n");
+	printf ("zz=%d\n", zz[i]);
+      // printf ("\n");
       wait ();
       for (i = 0; i < T; i++)
 	{
@@ -4230,7 +4248,7 @@ lab:
 
       unsigned short tt[K] = { 0 }, t3[K] = { 0 };
       for (i = 0; i < K; i++)
-	tt[i] = code2[i] ^ ef.x[i];
+	tt[i] = ef.x[i] ^ code2[i]; 
       printf ("m=");
       for (i = 0; i < K; i++)
 	{
@@ -4241,7 +4259,7 @@ lab:
       printf ("\n");
       //exit(1);
       wait ();
-
+      
       //exit(1);
       //goto label;
 
@@ -4349,6 +4367,7 @@ lab:
       if (count == T * 2)
 	{
 	  printf ("err=%dっ!! \n", count);
+	  //exit(1);
 	  B++;
 	  unsigned short e[N] = { 0 }, mm[N] = { 0 }, x[K] = { 0 };
 	  for (i = 0; i < K; i++)
@@ -4379,6 +4398,7 @@ lab:
       if (count < T * 2)
 	{
 	  printf ("error is too few\n");
+	  exit(1);
 	  AA++;
 	  memcpy (zz, z1, sizeof (zz));
 	  printf ("{");

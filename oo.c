@@ -3388,7 +3388,7 @@ main (void)
   FILE *fp, *fq;
   unsigned short z1[N] = {0}; //{1,0,1,1,1,0,0,0,0,0,1,1,1,0,0,1};
   //  {0};
-
+  MAT X={0};
 
   int flg, o1 = 0;
   OP f = { 0 }, r = {
@@ -3656,7 +3656,9 @@ label:
 lab:
 
   matmul ();
-  matinv ();
+  X=matinv ();
+if(X.o== -1)
+  goto label;
   //makeS();
   //exit(1);
 
@@ -3782,9 +3784,9 @@ lab:
           l = xor128 () % D;
           //printf("l=%d\n",l);
 	  k=rand()%M;
-          if (0 == zz[l] && k>0)
+          if (0 == zz[l] && l>0)
             {
-              zz[l] = k;
+              zz[l] = l;
               j++;
             }
         }
@@ -3879,7 +3881,7 @@ lab:
 	if(gh.x[i]>0)
 	  printf("e=%d %d\n",i,gh.x[i]);
       }
-      exit(1);
+      //exit(1);
       //goto label;
 
     
