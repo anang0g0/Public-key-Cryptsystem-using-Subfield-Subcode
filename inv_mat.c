@@ -212,26 +212,34 @@ for(i=0;i<n;i++){
 //掃き出し法
 
  for(i=0;i<n;i++){
+   k=i;
   if(a.x[i][i]==0){
-    
-    for(ii=0;ii<K;ii++)
-    dd.x[0][ii]=a.x[i][ii];
-    for(ii=0;ii<K;ii++)
-      a.x[i][ii]=a.x[i+1][ii];
-    for(ii=0;ii<K;ii++)
-      a.x[i+1][ii]=dd.x[0][ii];
-    for(ii=0;ii<K;ii++)
-      dd.x[1][ii]=inv_a.x[i][ii];
-    for(ii=0;ii<K;ii++)
-      inv_a.x[i][ii]=inv_a.x[i+1][ii];
-    for(ii=0;ii<K;ii++)
-      inv_a.x[i+1][ii]=dd.x[1][ii];
-    
     printf("だめぇ〜！\n");
     //exit(1);
     wait();
-    //a.o = -1;
-    //return a;
+
+    while(a.x[k][i]==0){
+      k++;
+      if(k>n){
+	printf("この兄ちゃん飼っちゃおうぜ\n");
+	//a.o = -1;
+	//return a;
+	exit(1);
+      }
+    }
+    for(ii=0;ii<K;ii++)
+    dd.x[0][ii]=a.x[i][ii];
+    for(ii=0;ii<K;ii++)
+      a.x[i][ii]=a.x[k][ii];
+    for(ii=0;ii<K;ii++)
+      a.x[k][ii]=dd.x[0][ii];
+    for(ii=0;ii<K;ii++)
+      dd.x[1][ii]=inv_a.x[i][ii];
+    for(ii=0;ii<K;ii++)
+      inv_a.x[i][ii]=inv_a.x[k][ii];
+    for(ii=0;ii<K;ii++)
+      inv_a.x[k][ii]=dd.x[1][ii];
+    
   }
   
   buf=gf[Inv(fg[a.x[i][i]])];
