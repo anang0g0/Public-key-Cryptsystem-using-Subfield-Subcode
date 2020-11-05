@@ -1,6 +1,12 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
 # （間違えたら消します）
 
+# 20201105
+
+make dev が動きます。bibun関数で異様に遅い現象を改善しました。
+
+ulimit -s unlimitedを実行して動かしてください。
+
 # 20201103
 
 make devは正常に動きません。
