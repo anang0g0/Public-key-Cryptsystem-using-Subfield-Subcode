@@ -1,6 +1,14 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
 # （間違えたら消します）
 
+# 20201109
+
+GoppaDecorderのバグの修正に伴い、decode関数とpattarson関数で使うGCD関数を、それぞれogcdとzgcd関数に置き換えました。
+この変更によりxgcdはなくなります。
+omp指定を外して高速化ができました。
+
+GoppaDecorderの更なるバグがないか調査のため、一時的にこのリポジトリの開発は遅延するかもしれません。
+
 # 20201105
 
 make dev が動きます。bibun関数で異様に遅い現象を改善しました。
