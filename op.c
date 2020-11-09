@@ -329,7 +329,6 @@ oadd (OP f, OP g)
   g = conv (g);
   assert (op_verify (f));
   assert (op_verify (g));
-
   vec a = { 0 }
   , b = {
     0
@@ -339,10 +338,8 @@ oadd (OP f, OP g)
   };
   int i, j, k, l = 0;
   OP h = { 0 }, f2 = { 0 }, g2 = { 0 };
-
   a = o2v (f);
   b = o2v (g);
-
   if (deg (o2v (f)) >= deg (o2v (g)))
     {
       k = deg (o2v (f)) + 1;
@@ -351,7 +348,6 @@ oadd (OP f, OP g)
     {
       k = deg (o2v (g)) + 1;
     }
-
   for (i = 0; i < k; i++)
     {
       c.x[i] = a.x[i] ^ b.x[i];
@@ -551,7 +547,6 @@ oterml (OP f, oterm t)
   OP h = { 0 };
   vec test;
   unsigned short n;
-
   f = conv (f);
   k = odeg (f);
   j = 0;
@@ -560,7 +555,6 @@ oterml (OP f, oterm t)
       h.t[i].n = f.t[i].n + t.n;
       h.t[i].a = gf[mlt (fg[f.t[i].a], fg[t.a])];
     }
-
   h = conv (h);
   assert (op_verify (h));
   return h;
@@ -625,7 +619,6 @@ omul (OP f, OP g)
     0
   };
   vec c = { 0 };
-
   if (odeg ((f)) > odeg ((g)))
     {
       k = odeg ((f));
@@ -634,7 +627,6 @@ omul (OP f, OP g)
     {
       k = odeg ((g));
     }
-
   for (i = 0; i < k + 1; i++)
     {
       t = g.t[i];
@@ -1238,144 +1230,136 @@ chk (OP f)
 }
 
 
-//decode用の多項式の最大公約数
+// gcd for pattarson
 OP
-ogcd (OP f, OP g)
+zgcd (OP a, OP n)
 {
-  OP h;
-  //oterm a, b;
-  int i = 0;
-
-
-  //oprintpol((f));
-  //oprintpol((g));
-  //  exit(1);
-
-  for (i = 0; i < T; i++)
-    {
-      if (odeg ((g)) == 0)
-	break;
-      h = omod (f, g);
-      if (odeg ((h)) == T - 1)
-	{
-	  //printpol (o2v (h));
-	  printf (" in ogcd=============\n");
-	  //wait();
-	  //break;
-	  return h;
-	}
-      f = g;
-      g = h;
-    }
-  // exit(1);
-
-
-  return h;
-}
-
-
-//拡張ユークリッドアルゴリズム
-EX
-xgcd (OP f, OP g)
-{
-  OP h = { 0 }
-  , ww = {
+  OP d = { 0 }, x = {
     0
-  }
-  , *v, *u;
-  oterm a, b;
-  int i = 0, j, k, flg = 0;
-  EX e = { 0 }, ee = { 0 };
+  }, s = {
+    0
+  }, q = {
+    0
+  }, r = {
+    0
+  }, t = {
+    0
+  }, u = {
+    0
+  }, v = {
+    0
+  }, w = {
+    0
+  }, tt = {
+    0
+  }, gcd = {
+    0
+  }, rt = { 0 };
+  oterm b = { 0 };
+  vec vv = { 0 }, xx = {
+    0
+  };
 
 
-  v = (OP *) malloc (sizeof (OP) * (DEG));
-  u = (OP *) malloc (sizeof (OP) * (DEG));
-  memset (v, 0, sizeof (OP) * DEG);
-  memset (u, 0, sizeof (OP) * DEG);
-
-
-  u[0].t[0].a = 1;
-  u[0].t[0].n = 0;
-  u[1].t[0].a = 0;
-  u[1].t[0].n = 0;
-  u[2].t[0].a = 1;
-  u[2].t[0].n = 0;
-
-  v[0].t[0].a = 0;
-  v[0].t[0].n = 0;
-  v[1].t[0].a = 1;
-  v[1].t[0].n = 0;
-
-
-  //printpol (o2v (f));
-  printf (" f===============\n");
-  //printpol (o2v (g));
-  printf (" s===============\n");
-  // exit(1);
-
-
-  k = 0;
-  i = 0;
-  while (1)
+  if (odeg ((a)) > odeg ((n)))
     {
-
-      if (deg (o2v (g)) == 0)
-	{
-	  flg = 1;
-	  printf ("v[%d]=%d skipped deg(g)==0!\n", i, odeg ((v[i])));
-	  printf (" g========\n");
-	  //exit (1);
-	  //return e;
-	  break;
-	}
-
-      if (LT (g).n > 0)
-	h = omod (f, g);
-
-      if (LT (g).a > 0)
-	ww = odiv (f, g);
-
-      v[i + 2] = oadd (v[i], omul (ww, v[i + 1]));
-      u[i + 2] = oadd (u[i], omul (ww, u[i + 1]));
-      //printf ("i+1=%d %d %d g=%d\n", i + 1, odeg ((v[i])), T - 1, odeg ((g)));
-      f = g;
-      g = h;
-
-      //if(
-      if (deg (o2v (f)) == T - 1 || deg (o2v (v[i])) == T - 1)
-	{
-	  printf ("i=%d\n", i);
-	  //wait();
-	  break;
-	}
-      i++;
-      /*
-       */
+      rt = a;
+      a = n;
+      n = rt;
+      printf ("big is good\n");
+      //exit (1);
+    }
+  if (LT (a).a == 0)
+    {
+      printf (" a ga 0\n");
+      exit (1);
     }
 
-  //printf ("i=%d\n", i);
-  //wait();
-  //oprintpol ((v[i]));
-  printf ("deg(v)=%d\n", deg (o2v (v[i])));
-  printf (" v=============\n");
-  printf ("deg(u)=%d\n", deg (o2v (u[i])));
-  //printpol (o2v (u[i]));
-  printf (" u=============\n");
-  printf ("deg(f)=%d\n", deg (o2v (f)));
-  printf (" f=============\n");
-  //exit(1);
+
+  tt = n;
+
+  d = n;
+  x.t[0].a = 0;
+  x.t[0].n = 0;
+  s.t[0].a = 1;
+  s.t[0].n = 0;
+  while (odeg ((a)) > T)
+    {
+      if (odeg ((a)) > 0)
+	r = omod (d, a);
+      if (LT (a).a == 0)
+	break;
+      if (LT (a).a > 0)
+	q = odiv (d, a);
+
+      d = a;
+      a = r;
+      t = oadd (x, omul (q, s));
+
+      x = s;
+      s = t;
+    }
+  d = a;
+  a = r;
+  
+  x = s;
+  s = t;
+  gcd = d;			// $\gcd(a, n)$
+
+  b = LT (w);
+  v = oadd (x, n);
+  w = tt;
+  if (LT (v).n > 0 && LT (w).n > 0)
+    {
+      u = omod (v, w);
+    }
+  else
+    {
+      //printpol (o2v (v));
+      printf (" v===========\n");
+      //printpol (o2v (x));
+      printf (" x==0?\n");
+      //printpol (o2v (n));
+      printf (" n==0?\n");
+
+      exit (1);
+    }
+  //caution !!
+  if (LT (u).a > 0 && LT (d).a > 0)
+    {
+      u = odiv (u, d);
+    }
+
+  if (LT (u).a == 0 || LT (d).a == 0)
+    {
+      printf ("inv div u or d==0\n");
+      // exit(1);
+    }
+  if (LT (u).a == 0)
+    {
+      printf ("no return at u==0\n");
+      exit (1);
+    }
 
 
-  e.d = f;
-  e.v = v[i];
-  e.u = u[i];
-
-  free (v);
-  free (u);
-
-
-  return e;
+  return x;
 }
+
+
+//decode用の多項式の最大公約数
+OP ogcd(OP xx,OP yy){
+  OP tt;
+
+  while (odeg(yy) > T-1){
+    tt = omod(xx , yy);
+    xx = yy;
+    yy = tt;
+    }
+
+  return tt;
+  
+}
+
 
 
 //拡張ユークリッドアルゴリズム(pattarson)
@@ -2080,7 +2064,7 @@ decode (OP f, OP s)
   printf ("@@@@@@@@@\n");
   //exit(1);
 
-  hh = xgcd (f, s);
+  h = ogcd (f, s);
   //printpol (o2v (hh.d));
   //wait();
 
@@ -2106,9 +2090,9 @@ decode (OP f, OP s)
     {
       if (x.x[i] > 0 || (i == 0 && x.x[i] == 0))
 	{
-	  e.t[i].a =
-	    gf[mlt (fg[trace (hh.d, x.x[i])], oinv (trace (l, x.x[i])))];
-	  //e.t[i].a = gf[mlt (fg[trace (h, x.x[i])], oinv (trace (l, x.x[i])))];
+	  //e.t[i].a =
+	  //gf[mlt (fg[trace (hh.d, x.x[i])], oinv (trace (l, x.x[i])))];
+	  e.t[i].a = gf[mlt (fg[trace (h, x.x[i])], oinv (trace (l, x.x[i])))];
 	  e.t[i].n = x.x[i];
 	}
     }
@@ -2989,7 +2973,8 @@ pattarson (OP w, OP f)
   }, h = {
     0
   };
-  EX hh = { 0 };
+  EX ex={0};
+  OP hh = { 0 };
   vec v;
   oterm rr = { 0 };
   OP r2 = { 0 }, b2 = {
@@ -3053,12 +3038,12 @@ pattarson (OP w, OP f)
       exit (1);
     }
   //exit(1);
-  hh = xgcd (w, g1);
+  hh = zgcd (w, g1);
   flg = 0;
 
 
-  ff = omod (omul (hh.v, g1), w);
-  printpol (o2v (hh.v));
+  ff = omod (omul (hh, g1), w);
+  printpol (o2v (hh));
   printf (" alpha!=========\n");
   printpol (o2v (ff));
   printf (" beta!=========\n");
@@ -3067,12 +3052,12 @@ pattarson (OP w, OP f)
   printpol (o2v (f));
   printf (" syn=========\n");
 
-  printpol (o2v (hh.v));
+  printpol (o2v (hh));
   printf (" alpha!=========\n");
 
-  hh = xgcd (w, g1);
-  ff = omod (omul (hh.v, g1), w);
-  ll = oadd (omul (ff, ff), omul (tt, omul (hh.v, hh.v)));
+  hh = zgcd (w, g1);
+  ff = omod (omul (hh, g1), w);
+  ll = oadd (omul (ff, ff), omul (tt, omul (hh, hh)));
   v = chen (ll);
   if (v.x[K - 1] > 0)
     {
@@ -3083,19 +3068,19 @@ pattarson (OP w, OP f)
 
 
 
-  hh = xgcd (w, g1);
-  ff = omod (omul (hh.v, g1), w);
+  hh = zgcd (w, g1);
+  ff = omod (omul (hh, g1), w);
   if (odeg ((ff)) != K / 2)
     {
 
       printf ("\nbefore h.d\n");
-      ff = omod (omul (hh.v, g1), w);
+      ff = omod (omul (hh, g1), w);
       flg = 1;
       printpol (o2v (ff));
       printf (" ==========beta!\n");
-      printpol (o2v (hh.v));
+      printpol (o2v (hh));
       printf (" alpha!=========\n");
-      ll = oadd (omul (ff, ff), omul (tt, omul (hh.v, hh.v)));
+      ll = oadd (omul (ff, ff), omul (tt, omul (hh, hh)));
       v = chen (ll);
       if (v.x[K - 1] > 0)
 	{
@@ -3105,13 +3090,13 @@ pattarson (OP w, OP f)
 
       for (o1 = 1; o1 < T; o1++)
 	{
-	  hh = xgcd2 (w, g1, o1);
-	  ff = omod (omul (hh.v, g1), w);
+	  ex = xgcd2 (w, g1, o1);
+	  ff = omod (omul (ex.v, g1), w);
 	  printpol (o2v (ff));
 	  printf (" ===========beta!\n");
 	  printpol (o2v (h));
 	  printf (" ===========alpha!\n");
-	  ll = oadd (omul (ff, ff), omul (tt, omul (hh.v, hh.v)));
+	  ll = oadd (omul (ff, ff), omul (tt, omul (ex.v, ex.v)));
 	  v = chen (ll);
 	  if (v.x[K - 1] > 0)
 	    {
@@ -3124,7 +3109,7 @@ pattarson (OP w, OP f)
     }
 
 
-  ll = oadd (omul (ff, ff), omul (tt, omul (hh.v, hh.v)));
+  ll = oadd (omul (ff, ff), omul (tt, omul (hh, hh)));
   v = chen (ll);
   if (v.x[K - 1] > 0)
     {
@@ -3133,17 +3118,17 @@ pattarson (OP w, OP f)
     }
 
 
-  hh = xgcd (w, g1);
-  ff = omod (omul (hh.v, g1), w);
+  hh = zgcd (w, g1);
+  ff = omod (omul (hh, g1), w);
   for (o1 = 1; o1 < T; o1++)
     {
-      hh = xgcd2 (w, g1, o1);
-      ff = omod (omul (hh.v, g1), w);
+      ex = xgcd2 (w, g1, o1);
+      ff = omod (omul (ex.v, g1), w);
       printpol (o2v (ff));
       printf (" ===========beta!\n");
       printpol (o2v (h));
       printf (" ===========alpha!\n");
-      ll = oadd (omul (ff, ff), omul (tt, omul (hh.v, hh.v)));
+      ll = oadd (omul (ff, ff), omul (tt, omul (ex.v, ex.v)));
       v = chen (ll);
       if (v.x[K - 1] > 0)
 	{
@@ -3158,7 +3143,7 @@ pattarson (OP w, OP f)
 
   if (odeg ((ff)) == 1)
     {
-      ll = oadd (omul (ff, ff), omul (tt, omul (hh.v, hh.v)));	//ff;
+      ll = oadd (omul (ff, ff), omul (tt, omul (hh, hh)));	//ff;
       printf ("deg==1\n");
       //wait ();
     }
@@ -3507,8 +3492,8 @@ void trap(OP w,OP f){
 	  //exit(1);
 	  goto label;
 	}
-      hh = xgcd (w, g1);
-      ff = omod (omul (hh.v, g1), w);
+      hh = zgcd (w, g1);
+      ff = omod (omul (hh, g1), w);
       //printpol (o2v (ff));
       printf (" beta!=========\n");
       if (odeg ((ff)) != K / 2)
@@ -4042,12 +4027,9 @@ lab:
   printf ("after inv_S\n");
   pMAT (mat3, N, K, 0);
   wait ();
-
   printf ("decode of G\n");
   pMAT (gen, N, K, 0);
   //exit(1);
-
-
   printf ("original\n");
   pMAT (G, K, N, 0);
   //exit(1);
