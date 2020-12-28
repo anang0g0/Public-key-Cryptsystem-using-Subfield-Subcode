@@ -40,7 +40,7 @@ wait (void)
         int i, j, x;
         time_t t;
 
-	srand(clock()+time(&t));
+	//srand(clock()+time(&t));
 
 
         for (i = 0; i < N; i++) {
@@ -217,7 +217,7 @@ for(i=0;i<n;i++){
     printf("だめぇ〜！\n");
     //exit(1);
     wait();
-    
+
     int tmp=0,row=0;
     tmp=a.x[i][i];
     for(ii=i;ii<K;ii++){
@@ -229,6 +229,7 @@ for(i=0;i<n;i++){
     printf("max=%d\n",row);
     //exit(1);
     wait();
+
     while(a.x[k][i]==0){
       k++;
       if(k>n){
@@ -350,7 +351,7 @@ unsigned short buf; //一時的なデータを蓄える
     //codeの後半部分をaにコピー
     for(i=0;i<F;i++){
       for(j=0;j<F;j++){
-	a.x[i][j]=code.x[i][N-K+j]; //rand()%N;
+	a.x[i][j]=code.x[i][K+j]; //rand()%N;
 	printf("a%d,",a.x[i][j]);
       }
       printf("\n");
@@ -470,28 +471,28 @@ printf("行列を出力\n ={\n");
  //memcpy(GG.x,code.x,sizeof(code.x));
  //
  //printf("\n");
- pMAT(c2,K,N-K,0);
+ pMAT(c2,K,N,0);
  wait();
  
- for(i=0;i<N-K;i++){
+ for(i=0;i<N;i++){
    GG.x[i][i]=1;
  }
 
  for(i=0;i<K;i++){
-   for(j=0;j<N-K;j++)
-     GG.x[i+N-K][j]=c2.x[i][j];
+   for(j=0;j<N;j++)
+     GG.x[i+K][j]=c2.x[i][j];
  }
  printf("生成行列GG.x!\n");
- pMAT(GG,N,N-K,0);
+ pMAT(GG,N,K,0);
  wait();
 
  
  MAT tmp={0};
  for(i=0;i<N;i++){
-   for(j=0;j<N-K;j++)
+   for(j=0;j<K;j++)
      tmp.x[j][i]=GG.x[i][j];
  }
- pMAT(tmp,N-K,N,0); 
+ pMAT(tmp,K,N,0); 
  wait();
  
  unsigned short ss[N]={0};
