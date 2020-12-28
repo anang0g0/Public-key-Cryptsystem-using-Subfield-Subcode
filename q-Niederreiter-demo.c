@@ -3809,9 +3809,9 @@ lab:
       count = 0;
 
       memset (zz, 0, sizeof (zz));
-      for(i=1;i<5;i++)
-      zz[i]=i;
-      /*
+      //for(i=1;i<5;i++)
+      //zz[i]=i;
+      
       j = 0;
       while (j < T)
         {
@@ -3823,7 +3823,7 @@ lab:
               j++;
             }
         }
-      */
+      
       for (i = 0; i < D; i++)
         {
           if (zz[i] > 0)
