@@ -8,6 +8,7 @@
 
 https://cr.yp.to/codes/wild-20100721.pdf
 
+https://pqcrypto.org/wild-challenges.html
 
 # 20210102
 
