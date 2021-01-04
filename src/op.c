@@ -126,7 +126,7 @@ o2v (OP f)
   vec a = { 0 };
   int i;
 
-#pragma omp parallel for
+  //#pragma omp parallel for
   for (i = 0; i < DEG; i++)
     {
       if (f.t[i].a > 0 && f.t[i].n < DEG)
@@ -2311,75 +2311,6 @@ f8 (unsigned short g[])
 }
 
 
-int
-detb (unsigned short g[])
-{
-  int i, j, flg = 0;
-  /*
-     for(i=0;i<N;i++){
-     for(j=0;j<K;j++)
-     mat[i][j]=0;
-     }
-   */
-#pragma omp parallel num_threads(8)
-  {
-#pragma omp sections
-    {
-      //if(omp_get_thread_num() == 0){
-#pragma omp section
-      f1 (g);
-
-      //if(omp_get_thread_num() == 1){
-#pragma omp section
-      f2 (g);
-      //}
-      //if(omp_get_thread_num() == 2){
-#pragma omp section
-      f3 (g);
-      //}
-      //if(omp_get_thread_num() == 3){
-#pragma omp section
-      f4 (g);
-      //}
-      //if(omp_get_thread_num() == 4){
-#pragma omp section
-      f5 (g);
-      //}
-      //if(omp_get_thread_num() == 5){
-#pragma omp section
-      f6 (g);
-      //}
-      //if(omp_get_thread_num() == 6){
-#pragma omp section
-      f7 (g);
-      //}
-      //if(omp_get_thread_num() == 7){
-#pragma omp section
-      f8 (g);
-      //}
-    }
-  }
-  printf ("enf of detb\n");
-  for (j = 0; j < N; j++)
-    {
-      flg = 0;
-      for (i = 0; i < K; i++)
-	{
-	  //printf("%d,",mat[i][j]);
-	  if (mat[j][i] > 0)
-	    flg = 1;
-	  //      printf("\n");
-	}
-      if (flg == 0)
-	{
-	  printf ("0 is %d\n", j);
-	  //exit(1);
-	  return -1;
-	}
-    }
-
-  return 0;
-}
 
 
 
@@ -2555,7 +2486,7 @@ bdet ()
       for (j = 0; j < K; j++)
 	{
 	  l = mat[i][j];
-#pragma omp parallel for
+	  //#pragma omp parallel for
 	  for (k = 0; k < E; k++)
 	    {
 	      BH[j * E + k][i] = l % 2;
@@ -2565,7 +2496,7 @@ bdet ()
     }
   for (i = 0; i < N; i++)
     {
-#pragma omp parallel for
+      //#pragma omp parallel for
       for (j = 0; j < E * K; j++)
 	{
 	  //  printf("%d,",BH[j][i]);
@@ -2593,7 +2524,7 @@ pubkeygen ()
   H = mtx_new (3328, 8192);
 
   fp = fopen ("pub.key", "wb");
-#pragma omp parallel for private(j,k)
+  //#pragma omp parallel for private(j,k)
   for (i = 0; i < E * K; i++)
     {
       for (j = 0; j < N; j++)
@@ -2612,17 +2543,17 @@ pubkeygen ()
     }
   P2Mat (P);
 
-#pragma omp parallel for
+  //#pragma omp parallel for
   for (i = 0; i < E * K; i++)
     {
       //  for(j=0;j<N;j++){
-#pragma omp parallel for
+      //#pragma omp parallel for
       for (k = 0; k < N; k++)
 	pub[i][k] = tmp[i][P[k]];	//&A[k][j];
       //    }
     }
 
-#pragma omp parallel for private(j)
+  //#pragma omp parallel for private(j)
   for (i = 0; i < N; i++)
     {
       for (j = 0; j < E * K; j++)
@@ -3325,7 +3256,7 @@ synd (unsigned short zz[])
 
   printf ("in synd\n");
 
-#pragma omp parallel for	//num_threads(8)
+  //#pragma omp parallel for	//num_threads(8)
   for (i = 0; i < K; i++)
     {
       syn[i] = 0;
@@ -3911,7 +3842,7 @@ label:
   wait ();
 
 
-#pragma omp parallel for
+  //#pragma omp parallel for
   for (i = 0; i < N; i++)
     tr[i] = oinv (ta[i]);
 
@@ -4096,7 +4027,7 @@ lab:
 	code[i] ^= zz[i];
       unsigned short z3[N] = { 0 };
       memcpy (z3, zz, sizeof (z3));
-#pragma omp parallel for
+      //#pragma omp parallel for
       for (i = 0; i < N; i++)
 	{
 	  for (j = 0; j < N; j++)

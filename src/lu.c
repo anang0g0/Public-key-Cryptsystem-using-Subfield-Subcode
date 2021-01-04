@@ -6,7 +6,7 @@
 #include <time.h>
 
 //#define D 4096
-#define F 256 //2040
+#define F K //2040
 
 unsigned char a[F][F]={0};
 unsigned char cc[F][F]={0};
@@ -81,7 +81,7 @@ MAT makeS(){
   
   while(flg<F || count!=F*F-F){
     
-    srand(clock()+time(&t));
+    //srand(clock()+time(&t));
 
     g2();
     printf("end of g2\n");
