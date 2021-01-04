@@ -44,33 +44,6 @@ https://cr.yp.to/codes/wild-20100721.pdf
 
 もし鍵に含まれるエラーを特定する方法がなければ、安全だと言えるのだろうか？
 
-Summary: For example, if the correcting power of the code is t and k=n/2, the error e to be added to the line in advance will be the diagonal (or the substitution matrix multiplied by e). The weight of the random error e in the key is wt(e)=k.
-
-When encoding a random message m as a random parameter, let wt(m)=t/2.
-
-Let the scrambling matrix be S, the N×N substitution matrix be P, the K×K substitution matrix be T, and an arbitrary error r chosen by the sender (weight wt(r)=t/2). Let the ciphertext be c.
-
-Key generation: G'=SGP+eT
-
-Encryption: c=mG'+r
-
-which looks like In other words, if we put wt(m)+wt(r)=t, the sender can send any r as a message.
-
-Since the recipient (the person who released the key) knows where the error is at first, he can remove the error e from the message after decrypting the ciphertext c.
-
-We assume that the error e is intentionally placed by the publisher in the second half of the key, in the K✕ K matrix.
-
-In other words, the ciphertext is in the second half of the message, so only the errors in the first half need to be in the message. (For the sake of simplicity)
-
-However, it has been pointed out that such a restriction may make the system vulnerable to not only structural attacks but also existing attacks such as ISD.
-
-So, it seems that we need to think about the attack method first.
-
-I haven't looked into it yet, but this area is very competitive, so it's possible that someone has already come up with an idea, and I don't have the full picture. (Even the experts didn't seem to know.)
-
-The reason for putting the error in the key is to hide the structure of the code, but I doubt it will have much effect. Since decryption is possible, I put the error in the key in order to remove the structure from the key. This is how I released the new candidate early in the new year, but it needs to be evaluated as soon as possible to see if it might be vulnerable to ISD and structure attacks.
-
-If there is no way to identify the error in the key, can we say it is secure?
 
 例：
 
