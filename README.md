@@ -10,6 +10,8 @@ https://cr.yp.to/codes/wild-20100721.pdf
 
 https://pqcrypto.org/wild-challenges.html
 
+いろいろ専門家のアドバイスを聞いて参考にしています。
+
 # 20210102
 
 概要：例えば、符号の訂正能力をtとし、k=n/2とやると予め行に加えておくエラーeは対角線（あるいは置換行列をeにかけたもの）
