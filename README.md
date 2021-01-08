@@ -1,6 +1,10 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
 # （間違えたら消します）
 
+# 20210109
+
+コードが汚くてもとりあえず動いてくれればいいんだけど、だーれも動くの作ってない。
+
 # 20210108
 
 https://eprint.iacr.org/2010/372.pdf
