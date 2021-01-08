@@ -1,6 +1,6 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
 
-sageを入れましょう。
+sagemathを入れましょう。
 
 # （間違えたら消します）
 
