@@ -1,4 +1,7 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
+
+sageを入れましょう。
+
 # （間違えたら消します）
 
 # 20210109
