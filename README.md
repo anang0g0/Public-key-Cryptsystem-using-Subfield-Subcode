@@ -5,6 +5,10 @@
 
 https://eprint.iacr.org/2010/372.pdf
 
+https://arxiv.org/pdf/1402.3264.pdf
+
+https://tel.archives-ouvertes.fr/tel-01187916/document
+
 https://www.iacr.org/archive/asiacrypt2014/88730287/88730287.pdf
 
 # 20210104
