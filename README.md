@@ -1,6 +1,10 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
 # （間違えたら消します）
 
+# 20210108
+
+https://eprint.iacr.org/2010/372.pdf
+
 # 20200104
 
 大して効果がないようなので別の目的で再利用します。
