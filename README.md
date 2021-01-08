@@ -5,6 +5,8 @@
 
 https://eprint.iacr.org/2010/372.pdf
 
+https://www.iacr.org/archive/asiacrypt2014/88730287/88730287.pdf
+
 # 20210104
 
 大して効果がないようなので別の目的で再利用します。
