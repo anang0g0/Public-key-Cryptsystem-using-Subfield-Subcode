@@ -12,6 +12,11 @@ sagemathを入れましょう。
 
 n=1331,2197,4913,6859(6860-Extend)
 
+https://arxiv.org/abs/1310.3202
+
+https://tel.archives-ouvertes.fr/tel-01187916/document
+
+
 
 # 20210108
 
