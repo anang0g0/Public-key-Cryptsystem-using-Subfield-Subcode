@@ -1,7 +1,42 @@
 # Pubric-key-Cryptosystem-with-Hidden-error-bit
+
+sagemathを入れましょう。
+
 # （間違えたら消します）
 
-# 20200104
+# 20210110
+
+https://www.sciencedirect.com/science/article/pii/S0747717102001396
+
+標数p=3,5のとき、n=GF(3^7),GF(5^5)、
+n=2187,3125
+
+
+# 20210109
+
+コードが汚くてもとりあえず動いてくれればいいんだけど、だーれも動くの作ってない。
+
+実装予定：標数p=11,13,17,19の3次拡大体。 n=GF(p^3) こんなもんかな。
+
+n=1331,2197,4913,6859(6860-Extend)
+
+https://arxiv.org/abs/1310.3202
+
+https://tel.archives-ouvertes.fr/tel-01187916/document
+
+
+
+# 20210108
+
+https://eprint.iacr.org/2010/372.pdf
+
+https://arxiv.org/pdf/1402.3264.pdf
+
+https://tel.archives-ouvertes.fr/tel-01187916/document
+
+https://www.iacr.org/archive/asiacrypt2014/88730287/88730287.pdf
+
+# 20210104
 
 大して効果がないようなので別の目的で再利用します。
 攻撃アルゴリズムを実装するのは好きではないので、Wild McElieceのようなものをやってみたいです。
@@ -9,6 +44,8 @@
 https://cr.yp.to/codes/wild-20100721.pdf
 
 https://pqcrypto.org/wild-challenges.html
+
+いろいろ専門家のアドバイスを聞いて参考にしています。
 
 # 20210102
 
