@@ -1,8 +1,7 @@
-# Pubric-key-Cryptosystem-with-Hidden-error-bit
+# Wild McEliece
 
 sagemathを入れましょう。
 
-# （間違えたら消します）
 
 # 20210226
 
