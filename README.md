@@ -1,4 +1,4 @@
-# Wild McEliece
+# Wild McEliece（Maquarius）
 
 sagemathを入れましょう。
 
