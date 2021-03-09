@@ -6,12 +6,12 @@
 #include <time.h>
 
 //#define D 4096
-#define F K //2040
+#define F 12 //2040
 
 unsigned char a[F][F]={0};
 unsigned char cc[F][F]={0};
 unsigned char bb[F][F]={0};
-static unsigned char cl[F][F];
+unsigned char cl[F][F];
   
   //{{0,1,0,1},{1,0,0,1},{0,0,1,0},{0,0,1,1}};
 //{{0,1,1,1},{1,0,1,1},{0,0,1,1},{1,0,0,1}}; //{{1,2,0,-1},{-1,1,2,0},{2,0,1,1},{1,-2,-1,1}}; //入力用の配列
@@ -62,8 +62,8 @@ void g2(){
   }
 }
 
-//スクランブル行列Sを生成
-MAT makeS(){
+
+void makeS(){
   int i,j,k,l;
   unsigned char **b;
   unsigned char dd[F]={0};
@@ -73,7 +73,7 @@ MAT makeS(){
   unsigned char inv_a[F][F]; //ここに逆行列が入る
   unsigned char buf; //一時的なデータを蓄える
   int n=F;  //配列の次数
-  MAT S={0};
+
 
   b=malloc(F*sizeof(unsigned char *));
   for(i=0;i<F;i++)
@@ -81,7 +81,7 @@ MAT makeS(){
   
   while(flg<F || count!=F*F-F){
     
-    //srand(clock()+time(&t));
+    srand(clock()+time(&t));
 
     g2();
     printf("end of g2\n");
@@ -167,7 +167,6 @@ for(i=0;i<F;i++){
 for(i=0;i<F;i++){
  for(j=0;j<F;j++){
   printf(" %d,",inv_a[i][j]);
-  S.y[i][j]=inv_a[i][j];
  }
  printf("\n");
  }
@@ -218,7 +217,6 @@ for(i=0;i<F;i++){
     for(j=0;j<F;j++){
       printf("%d,",cl[i][j]);
       dd[j]=cl[i][j];
-      S.x[i][j]=cl[i][j];
     }
   
     printf("},\n");
@@ -246,7 +244,6 @@ for(i=0;i<F;i++){
     for(j=0;j<F;j++){
       printf("%d,",inv_a[i][j]);
       dd[j]=inv_a[i][j];
-      S.y[i][j]=inv_a[i][j];
     }
     printf("},\n");
   }
@@ -273,7 +270,6 @@ for(i=0;i<F;i++){
  }
   
  }
-  /*
   fq=fopen("S.key","wb");
   for(i=0;i<F;i++){
     for(j=0;j<F;j++)
@@ -282,8 +278,7 @@ for(i=0;i<F;i++){
     
   }
   fclose(fq);
-  
-  
+
   fq=fopen("inv_S.key","wb");
   for(i=0;i<F;i++){
     for(j=0;j<F;j++)
@@ -291,9 +286,8 @@ for(i=0;i<F;i++){
     fwrite(dd,1,n,fq);  
   }
   fclose(fq);
-  */
-  free(b);
 
-  return S;
+  free(b);
+  
 }
 
