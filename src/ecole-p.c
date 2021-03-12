@@ -7,16 +7,14 @@
 #include "chash-p.c"
 #include "debug.c"
 
-#define O 2197 //1331 //2197,4913,6859
+#define O 6859 //1331 //2197,4913,6859
 #define K 3
-#define P 13
+#define P 19
 
 //sagemath上での原始多項式
-unsigned short pp[4]= {0,0,11,2};
- // {0,0,9,2};
- // {1,0,11,2};
- // {1,0,16,3};
- // {1,0,15,2}; //GF(11^3,13^3,17^3,19^3)
+unsigned short pp[4][4]= {{0,0,9,2}, {0,0,11,2}, {0,0,16,3}, {0,0,15,2}};
+ // {0,0,9,2}, {1,0,11,2}, {1,0,16,3}, {1,0,15,2};
+ //GF(11^3,13^3,17^3,19^3)
 unsigned short ff[2][7]={{1,0,0,0,0,2,0,2},{0,0,1,0,0,0,1,2}}; //GF(3^7,5^5)
 
 unsigned int gf[O]={0},fg[O]={0};
@@ -512,8 +510,22 @@ void mkmf(){
   OP f={0},g={0},h={0},w={0},s={0},u={0};
   vec b={0},a={0},d={0},t={0},v={0};
   oterm o;
+  unsigned short ccp[4]={0};
 
-g=setpol(pp,4);
+  if(O==1331)
+  for(i=0;i<K+1;i++)
+  ccp[i]=pp[0][i];
+  if(O==2197)
+  for(i=0;i<K+1;i++)
+  ccp[i]=pp[1][i];
+  if(O==4913)
+  for(i=0;i<K+1;i++)
+  ccp[i]=pp[2][i];
+  if(O==6859)
+  for(i=0;i<K+1;i++)
+  ccp[i]=pp[3][i];
+
+g=setpol(ccp,4);
 //b.x[0]=2;
 //b.x[1]=9;
 a.x[1]=1;
