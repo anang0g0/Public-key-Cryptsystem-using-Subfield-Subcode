@@ -518,6 +518,20 @@ OP confer(OP f,int a){
 return g;
 }
 
+int oequ(OP f,OP g){
+vec v,x;
+int i,flg=0;
+
+v=o2v(f);
+x=o2v(g);
+for(i=0;i<512;i++){
+    if(v.x[i]!=x.x[i])
+    return -1;
+}
+
+return 0;
+}
+
 
 void mkmf(){
   int i,j,k,count=0;
@@ -601,18 +615,19 @@ if(o.n==3){
   printpol(o2v(f));
   printf("\n");
 }
-if(LT(g).n==0 && LT(g).a==1){
-  printf("agaa\n");
-break;
-}
 
 gf[count]=xtrace(g,P);
 printf("count=%d %d ",count,gf[count]);
 printpol(o2v(g));
 printf(" =gg\n\n");
+if(gf[count]==1){
+printf("count=%d\n",count);
+break;
+}
+
 count++;
-//if(count>O)
-//exit(1);
+if(count>O)
+exit(1);
 }
 
 //exit(1);
@@ -626,7 +641,9 @@ printf("%d,",gf[i]);
 printf("};");
 printf("\n");
 
+//exit(1);
 }
+
 
 
 int main(){
