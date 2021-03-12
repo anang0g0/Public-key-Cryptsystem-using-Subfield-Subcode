@@ -7,9 +7,9 @@
 #include "chash-p.c"
 #include "debug.c"
 
-#define O 2197 //1331 //2197,4913,6859
+#define O 6859 //1331 //2197,4913,6859
 #define K 3
-#define P 13
+#define P 19
 
 //sagemath上での原始多項式
 unsigned short pp[4][4]= {{0,0,9,2}, {0,0,11,2}, {0,0,16,3}, {0,0,15,2}};
@@ -358,6 +358,19 @@ oterml (OP f, oterm t)
   return h;
 }
 
+//OP型を正規化する
+OP
+conv (OP f)
+{
+  vec v = { 0 };
+  OP g = { 0 };
+
+  v = o2v (f);
+  g = v2o (v);
+
+  return g;
+}
+
 
 //多項式の掛け算
 OP
@@ -381,6 +394,11 @@ omul (OP f, OP g)
   l=deg(o2v(f));
   m=deg(o2v(g));
   
+  g=conv(g);
+  for(i=0;i<2;i++)
+  printf("%d\n",o2v(g).x[i]);
+//  exit(1);
+
   if (l >= m)
     {
       k = l;
@@ -401,7 +419,7 @@ printf(" =g\n");
     {
       t = g.t[i];
       if(t.a>0){
-        printf("t[%d]=%d,%d\n",i,t.a,t.n);
+      printf("t[%d]=%d,%d\n",i,t.a,t.n);
       e = oterml (f, t);
       printpol(o2v(e));
       printf(" =e\n");
@@ -605,7 +623,7 @@ printf(" papaya\n");
 
 o=LT(g);
 memset(d.x,0,sizeof(d));
-if(o.n==3){
+if(o.n==K){
   d.x[o.n]=o.a;
   h=v2o(d);
   g=osub(g,h);
@@ -626,8 +644,6 @@ break;
 }
 
 count++;
-if(count>O)
-exit(1);
 }
 
 //exit(1);
