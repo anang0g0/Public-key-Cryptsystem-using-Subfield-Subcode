@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
-//#include "global-p.h"
+#include "global-p.h"
 #include "struct.h"
 #include "chash-p.c"
 #include "debug.c"
@@ -18,7 +18,7 @@ unsigned short pp[4][4]= {{0,0,9,2}, {0,0,11,2}, {0,0,16,3}, {0,0,15,2}};
 unsigned short ff[2][7]={{1,0,0,0,0,2,0,2},{0,0,1,0,0,0,1,2}}; //GF(3^7,5^5)
 
 unsigned int gf[O]={0},fg[O]={0};
-int N =0,M=0;
+//int N =0,M=0;
 unsigned short c[K+1]={0};
 
 //OP型からベクトル型への変換
