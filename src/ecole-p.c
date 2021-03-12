@@ -7,9 +7,9 @@
 #include "chash-p.c"
 #include "debug.c"
 
-#define O 6859 //1331 //2197,4913,6859
+#define O 2197 //1331 //2197,4913,6859
 #define K 3
-#define P 19
+#define P 13
 
 //sagemath上での原始多項式
 unsigned short pp[4][4]= {{0,0,9,2}, {0,0,11,2}, {0,0,16,3}, {0,0,15,2}};
@@ -17,7 +17,7 @@ unsigned short pp[4][4]= {{0,0,9,2}, {0,0,11,2}, {0,0,16,3}, {0,0,15,2}};
  //GF(11^3,13^3,17^3,19^3)
 unsigned short ff[2][7]={{1,0,0,0,0,2,0,2},{0,0,1,0,0,0,1,2}}; //GF(3^7,5^5)
 
-unsigned int gf[O]={0},fg[O]={0};
+unsigned short gf[O]={0},fg[O]={0};
 //int N =0,M=0;
 unsigned short c[K+1]={0};
 
@@ -227,20 +227,24 @@ xtrace (OP f, unsigned short x)
 
 
 void makefg(int n){
-int i,j;
+unsigned short i,j,count=0;
 
-for(i=0;i<n;i++){
-  for(j=0;j<n;j++){
-    if(gf[i]==j)
+for(i=0;i<O;i++){
+
+  for(j=0;j<O;j++){
+    if(gf[i]==j){
       fg[j]=i;
+      count++;
+    }
   }
+  
 }
   printf("unsigned short fg[%d]={",O);
   for(i=0;i<O;i++)
   printf("%d,",fg[i]);
 printf("};\n");
-
-
+printf("count=%d\n",count);
+exit(1);
  
 return;
 }
@@ -293,10 +297,12 @@ oadd (OP f, OP g)
   //exit(1);
   b = o2v (g);
 
-  j=odeg(f);
-  l=odeg(g);
-  //  oprintpol((g));
-  //  exit(1);
+  j=deg(o2v(f));
+  l=deg(o2v(g));
+    printpol(o2v(f));
+    printf(" =f\n");
+    printpol(o2v(g));
+    printf(" =g\n");
   if (j >= l)
     {
       k = j + 1;
@@ -319,6 +325,8 @@ oadd (OP f, OP g)
     }
   // 
   h = v2o (c);
+  printpol(o2v(h));
+  printf("\n");
 
   return h;
 }
@@ -383,25 +391,31 @@ omul (OP f, OP g)
     }
 //printf("l=%d",l);
 //printf("m=%d",m);
-//printpol(o2v(f));
-//printf(" =f\n");
-//printpol(o2v(g));
-//printf(" =g\n");
+printpol(o2v(f));
+printf(" =f\n");
+printpol(o2v(g));
+printf(" =g\n");
 //exit(1);
 
-  for (i = 0; i < k + 1; i++)
+  for (i = 0; i < k ; i++)
     {
       t = g.t[i];
       if(t.a>0){
+        printf("t[%d]=%d,%d\n",i,t.a,t.n);
       e = oterml (f, t);
+      printpol(o2v(e));
+      printf(" =e\n");
+    printpol(o2v(h));
+    printf(" =h\n");
       h = oadd (h, e);
       }
     }
-    //printpol(o2v(f));
-    //printf(" =f\n");
+    printpol(o2v(h));
+    printf(" =h2\n");
+
     //printpol(o2v(g));
     //printf(" =g\n");
-    //exit(1);
+//    exit(1);
   //assert (op_verify (h));
   return h;
 }
@@ -512,18 +526,22 @@ void mkmf(){
   oterm o;
   unsigned short ccp[4]={0};
 
-  if(O==1331)
+  if(O==1331){
   for(i=0;i<K+1;i++)
   ccp[i]=pp[0][i];
-  if(O==2197)
+  }
+  if(O==2197){
   for(i=0;i<K+1;i++)
   ccp[i]=pp[1][i];
-  if(O==4913)
+  }
+  if(O==4913){
   for(i=0;i<K+1;i++)
   ccp[i]=pp[2][i];
-  if(O==6859)
+  }
+  if(O==6859){
   for(i=0;i<K+1;i++)
   ccp[i]=pp[3][i];
+  }
 
 g=setpol(ccp,4);
 //b.x[0]=2;
@@ -531,62 +549,69 @@ g=setpol(ccp,4);
 a.x[1]=1;
 v.x[3]=1;
 u=v2o(v);
-//d.x[3]=1;
-//printpol(o2v(g));
-//printf(" =g\n");
+d.x[3]=1;
+printpol(o2v(g));
+printf(" =g\n");
 //exit(1);
 
 //g=v2o(b);
-//s=v2o(a);
-s.t[1].a=1;
-s.t[1].n=1;
+s=v2o(a);
+//s.t[1].a=1;
+//s.t[1].n=1;
 //gf[12]=P;
 //gf[13]=P*P;
 
 w=g;
-//printpol(o2v(w));
-//printf(" =w\n");
-//printpol(o2v(g));
-//printf(" =g\n");
-//printpol(o2v(s));
-//printf(" =s\n");
+printpol(o2v(w));
+printf(" =w\n");
+printpol(o2v(g));
+printf(" =g\n");
+printpol(o2v(s));
+printf(" =s\n");
 
-//printf("\n");
-for(i=0;i<P;i++)
-gf[i]=i;
-gf[P]=xtrace(g,P);
-//printf("\naa=%d\n",gf[P]);
+printf("\n");
+//for(i=0;i<P;i++)
+gf[0]=0;
+gf[1]=1;
+gf[2]=P;
+gf[3]=P*P;
+gf[4]=xtrace(g,P);
+printf("\naa=%d\n",gf[P]);
 //exit(1);
 //w=omul(w,s);
 //gf[12]=1111;
-count=P+1;
+count=4+1;
 while(1){
 g=omul(g,s);
-//printpol(o2v(g));
-//printf(" =g\n\n");
+printpol(o2v(g));
+printf(" =g\n\n");
+printf(" papaya\n");
+
 //exit(1);
 
 o=LT(g);
 memset(d.x,0,sizeof(d));
-if(o.n==K){
+if(o.n==3){
   d.x[o.n]=o.a;
   h=v2o(d);
   g=osub(g,h);
   f=confer(w,o.a);
   g=oadd(g,f);
   //w=omod(w,u);
-  //printpol(o2v(f));
-  //printf("\n");
+  printpol(o2v(f));
+  printf("\n");
 }
-if(LT(g).n==0 && LT(g).a==1)
+if(LT(g).n==0 && LT(g).a==1){
+  printf("agaa\n");
 break;
-
+}
 
 gf[count]=xtrace(g,P);
-//printf("count=%d %d ",count,gf[count]);
-//printpol(o2v(g));
-//printf(" =gg\n\n");
+printf("count=%d %d ",count,gf[count]);
+printpol(o2v(g));
+printf(" =gg\n\n");
 count++;
+//if(count>O)
 //exit(1);
 }
 
@@ -605,11 +630,30 @@ printf("\n");
 
 
 int main(){
+unsigned short i,count=0,c2=0;
+unsigned short aaa[O]={0};
 
 mkmf();
-//exit(1);
 
   makefg(O);
+
+
+
+count=0;
+c2=0;
+for(i=0;i<O;i++){
+  if(gf[i]>0)
+  count++;
+  if(fg[i]>0){
+  c2++;
+  }else{
+   // printf("i=%d\n",i);
+  }
+}
+
+printf("%d %d\n",count,c2);
+//exit(1);
+
 
 
 return 0;
