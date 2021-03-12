@@ -1,6 +1,6 @@
 
 all:
-	clang -Wall -g -pg -O3 -DSRAND=1602886277 -mtune=znver1 -march=znver1 -ffast-math -funroll-loops  -fopenmp q-McEliece-demo.c
+	clang-10 -Wall -g -pg -O3 -DSRAND=1602886277 -mtune=znver1 -march=znver1 -ffast-math -funroll-loops  -fopenmp q-McEliece-demo.c
 
 nie:
 	clang -Wall -g -pg -O3 -DSRAND=1602886277 -mtune=znver1 -march=znver1 -ffast-math -funroll-loops  -fopenmp q-Niederreiter-demo.c
