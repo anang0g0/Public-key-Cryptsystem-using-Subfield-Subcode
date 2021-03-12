@@ -203,8 +203,8 @@ xtrace (OP f, unsigned short x)
   
 
   d = deg (o2v (f));
-printpol(o2v(f));
-printf(" =ff\n");
+//printpol(o2v(f));
+//printf(" =ff\n");
 
   for (i = 0; i < d + 1; i++)
     {
@@ -220,7 +220,7 @@ printf(" =ff\n");
     }
     u=(u+v);
     }
-  printf("u=%d\n",u%O);
+  //printf("u=%d\n",u%O);
 
   return u%O;
 }
@@ -381,12 +381,12 @@ omul (OP f, OP g)
     {
       k = m;
     }
-printf("l=%d",l);
-printf("m=%d",m);
-printpol(o2v(f));
-printf(" =f\n");
-printpol(o2v(g));
-printf(" =g\n");
+//printf("l=%d",l);
+//printf("m=%d",m);
+//printpol(o2v(f));
+//printf(" =f\n");
+//printpol(o2v(g));
+//printf(" =g\n");
 //exit(1);
 
   for (i = 0; i < k + 1; i++)
@@ -397,10 +397,10 @@ printf(" =g\n");
       h = oadd (h, e);
       }
     }
-    printpol(o2v(f));
-    printf(" =f\n");
-    printpol(o2v(g));
-    printf(" =g\n");
+    //printpol(o2v(f));
+    //printf(" =f\n");
+    //printpol(o2v(g));
+    //printf(" =g\n");
     //exit(1);
   //assert (op_verify (h));
   return h;
@@ -532,8 +532,8 @@ a.x[1]=1;
 v.x[3]=1;
 u=v2o(v);
 //d.x[3]=1;
-printpol(o2v(g));
-printf(" =g\n");
+//printpol(o2v(g));
+//printf(" =g\n");
 //exit(1);
 
 //g=v2o(b);
@@ -544,26 +544,26 @@ s.t[1].n=1;
 //gf[13]=P*P;
 
 w=g;
-printpol(o2v(w));
-printf(" =w\n");
-printpol(o2v(g));
-printf(" =g\n");
-printpol(o2v(s));
-printf(" =s\n");
+//printpol(o2v(w));
+//printf(" =w\n");
+//printpol(o2v(g));
+//printf(" =g\n");
+//printpol(o2v(s));
+//printf(" =s\n");
 
-printf("\n");
+//printf("\n");
 for(i=0;i<P;i++)
 gf[i]=i;
 gf[P]=xtrace(g,P);
-printf("\naa=%d\n",gf[P]);
+//printf("\naa=%d\n",gf[P]);
 //exit(1);
 //w=omul(w,s);
 //gf[12]=1111;
 count=P+1;
 while(1){
 g=omul(g,s);
-printpol(o2v(g));
-printf(" =g\n\n");
+//printpol(o2v(g));
+//printf(" =g\n\n");
 //exit(1);
 
 o=LT(g);
@@ -583,20 +583,23 @@ break;
 
 
 gf[count]=xtrace(g,P);
-printf("count=%d %d ",count,gf[count]);
-printpol(o2v(g));
-printf(" =gg\n\n");
+//printf("count=%d %d ",count,gf[count]);
+//printpol(o2v(g));
+//printf(" =gg\n\n");
 count++;
 //exit(1);
 }
 
 //exit(1);
 
-printpol(o2v(f));
-printf(" =f\n");
+//printpol(o2v(f));
+//printf(" =f\n");
+//printf("gf[%d]={\n",O);
+printf("unsigned short gf[%d]={",O);
 for(i=0;i<O;i++)
-printf("gf[%d]=%d\n",i,gf[i]);
-
+printf("%d,",gf[i]);
+printf("};");
+printf("\n");
 
 }
 
@@ -604,7 +607,7 @@ printf("gf[%d]=%d\n",i,gf[i]);
 int main(){
 
 mkmf();
-exit(1);
+//exit(1);
 
   makefg(O);
 
