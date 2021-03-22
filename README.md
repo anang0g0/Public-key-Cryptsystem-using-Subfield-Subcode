@@ -1,5 +1,7 @@
 # Wild McEliece（Maquarius）
 
+GF(p^n):p is prime p > 2 by C language.
+
 sagemathを入れましょう。
 
 # 20210322
